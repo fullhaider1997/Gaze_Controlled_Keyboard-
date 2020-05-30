@@ -30,7 +30,7 @@ public:
     ~FaceLandMarkDetector();
      cv:: Mat ConvertFrameToLandMarkFrame(cv::Mat originalFrame);
      //void DrawText(cv::Mat frame);
-     void CreateLandMarkPointsFace(dlib::cv_image<dlib::bgr_pixel> cimg, double (&faceLandMarksPoints)[68][2]);
+     cv::Mat CreateLandMarkPointsFace(cv::Mat frame,dlib::cv_image<dlib::bgr_pixel> cimg, double (&faceLandMarksPoints)[68][2]);
      void CreateFourMainEyeCoordinate(double (&faceLandMarksPoints)[68][2]);
      cv::Mat  DrawEyeCoordinate(cv::Mat frame,std::vector<int> FourEyeCoordinate,double (&faceLandMarksPoints)[68][2],int eye_p1,int eyep_2);
      void BlinkDetection();

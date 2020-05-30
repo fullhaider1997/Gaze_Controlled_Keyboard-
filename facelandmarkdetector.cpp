@@ -48,7 +48,7 @@ void FaceLandMarkDetector::CreateFourMainEyeCoordinate( double (&faceLandMarksPo
 
 }
 
-void FaceLandMarkDetector::CreateLandMarkPointsFace(
+cv::Mat FaceLandMarkDetector::CreateLandMarkPointsFace(cv::Mat frame,
                                                     dlib::cv_image<dlib::bgr_pixel> cimg,
                                                     double (&faceLandMarksPoints)[68][2])
 {
@@ -56,8 +56,8 @@ void FaceLandMarkDetector::CreateLandMarkPointsFace(
 
      qDebug() << "faces:" << faces.size();
 
-    if(faces.size()>0){
-     qDebug() << "Creating landmarks...";
+       if(faces.size()>0){
+        qDebug() << "Creating landmarks...";
         for (unsigned long i = 0; i < faces.size(); ++i)
                     shapes.push_back(pose_model(cimg, faces[i]));
 
@@ -72,13 +72,19 @@ void FaceLandMarkDetector::CreateLandMarkPointsFace(
                    faceLandMarksPoints[i][1] = (double)detectedFace.part(i).y();
 
                 }
+          for (unsigned long i = 0; i < 68; ++i) //
+                {
+                  cv::circle(frame,cv::Point(faceLandMarksPoints[i][0],faceLandMarksPoints[i][1]),2,cv::Scalar(255,255,0),2);
+
+                }
+
+
       }else{
 
-          return;
+          return frame;
     }
 
-
-
+  return frame;
 
 }
 void FaceLandMarkDetector::drawRectFace(std::vector<dlib::rectangle> faces, cv::Mat frame){
@@ -137,15 +143,15 @@ cv::Mat FaceLandMarkDetector::ConvertFrameToLandMarkFrame(cv::Mat frame)
          double faceLandMarksPoints[68][2];
          cv::Mat proccessed;
 
-         CreateLandMarkPointsFace(cimg,faceLandMarksPoints);
+         frame = CreateLandMarkPointsFace(frame,cimg,faceLandMarksPoints);
          drawRectFace(faces,frame);
          CreateFourMainEyeCoordinate(faceLandMarksPoints);
-         proccessed =DrawEyeCoordinate(frame,fourRightEyeCoodinate,faceLandMarksPoints,36,39);
+        // proccessed =DrawEyeCoordinate(frame,fourRightEyeCoodinate,faceLandMarksPoints,36,39);
        // DrawEyeCoordinate(frame,fourLeftEyeCoordinate,42,45);
 
 
 
- return proccessed;
+ return frame;
 
 
 }
