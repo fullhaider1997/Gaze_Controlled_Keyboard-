@@ -16,11 +16,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    facelandmarkdetector.cpp \
+    helper.cpp \
     main.cpp \
     mainwindow.cpp \
     videoprocessor.cpp
 
 HEADERS += \
+    facelandmarkdetector.h \
+    helper.h \
     mainwindow.h \
     videoprocessor.h
 
@@ -31,9 +35,11 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+INCLUDEPATH += /usr/opencv/release/opencv2
+LIBS += $(shell pkg-config opencv --libs)
 LIBS +=-L"/home/haider/Downloads/dlib-19.19_no_blas_cuda/build"
 LIBS += -ldlib
 CONFIG += link_pkgconfig
 PKGCONFIG += x11
 INCLUDEPATH += /usr/opencv/release/opencv2
-LIBS += $(shell pkg-config opencv --libs)
+

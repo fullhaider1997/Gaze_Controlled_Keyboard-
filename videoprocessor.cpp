@@ -1,35 +1,40 @@
 #include "videoprocessor.h"
-
+#include "facelandmarkdetector.h"
 VideoProcessor::VideoProcessor()
+    :
+ detector( new FaceLandMarkDetector)
 {
 
 }
- VideoProcessor::~VideoProcessor(){
+VideoProcessor::~VideoProcessor(){
 
 }
+
 
 void VideoProcessor::displayVideo(){
     qDebug() << "Starting capturing...";
 
     cv::VideoCapture camera(0);
-    cv::Mat frame;
+    cv::Mat Originalframe;
+    cv::Mat ProcessedFrame;
 
     while(camera.isOpened())
     {
 
-        camera >> frame;
-
-
-        cv::flip(frame,frame, +1);
-
-        if(frame.empty()){
+        camera >> Originalframe;
+        if(Originalframe.empty()){
            return;
         }
 
+       ProcessedFrame = detector->ConvertFrameToLandMarkFrame(Originalframe);
+
+
+
+
         emit display(QPixmap::fromImage(
-                     QImage(frame.data,frame.cols,frame.rows,frame.step,
-                     QImage::Format_BGR888).rgbSwapped()));
-         }
+                     QImage(Originalframe.data,Originalframe.cols,Originalframe.rows,Originalframe.step,
+                     QImage::Format_RGB888).rgbSwapped()));
+            }
 
 
 

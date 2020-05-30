@@ -6,6 +6,7 @@
 #include "opencv2/opencv.hpp"
 #include "qpixmap.h"
 #include "QImage"
+#include "facelandmarkdetector.h"
 class VideoProcessor : public QObject
 {
     Q_OBJECT
@@ -15,12 +16,13 @@ public:
 public slots:
     void displayVideo();
 
+
 signals:
     void display(QPixmap pixmap);
     void finished();
     void error(QString);
 private:
-
+    FaceLandMarkDetector *detector;
 
 };
 

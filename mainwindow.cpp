@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
       videoProccessor(new VideoProcessor),
-       thread(new QThread)
+      thread(new QThread)
 {
     ui->setupUi(this);
 
