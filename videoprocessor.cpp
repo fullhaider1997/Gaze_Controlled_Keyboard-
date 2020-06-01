@@ -1,8 +1,9 @@
 #include "videoprocessor.h"
-#include "facelandmarkdetector.h"
+#include "faciallandmarkdetector.h"
 VideoProcessor::VideoProcessor()
     :
- detector( new FaceLandMarkDetector)
+ faceDetector( new FacialLandMarkDetector),
+ eyeDetector(new EyeDetector)
 {
 
 }
@@ -15,32 +16,34 @@ void VideoProcessor::displayVideo(){
     qDebug() << "Starting capturing...";
 
     cv::VideoCapture camera(0);
-    cv::Mat frame;
+    cv::Mat faceFrame;
     cv::Mat ProcessedFrame;
+    cv::Mat eyeFrame;
 
     while(camera.isOpened())
     {
 
-        camera >> frame;
-        if(frame.empty()){
+        camera >> faceFrame;
+        if(faceFrame.empty()){
            return;
         }
 
-        frame = detector->ConvertFrameToLandMarkFrame(frame);
-
-
-
+        faceFrame = faceDetector->ConvertFrameToLandMarkFrame(faceFrame);
+        eyeFrame =  eyeDetector->displayEye(faceFrame);
 
         emit display(QPixmap::fromImage(
-                     QImage(frame.data,frame.cols,frame.rows,frame.step,
+                 QImage(eyeFrame.data,eyeFrame.cols,eyeFrame.rows,eyeFrame.step,
+                 QImage::Format_RGB888).rgbSwapped()));
+        }
+
+        emit display(QPixmap::fromImage(
+                     QImage(faceFrame.data,faceFrame.cols,faceFrame.rows,faceFrame.step,
                      QImage::Format_RGB888).rgbSwapped()));
-            }
-
-
 
 
 
 
     emit finished();
 }
+
 

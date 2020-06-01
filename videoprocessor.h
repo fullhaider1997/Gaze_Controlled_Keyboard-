@@ -6,7 +6,8 @@
 #include "opencv2/opencv.hpp"
 #include "qpixmap.h"
 #include "QImage"
-#include "facelandmarkdetector.h"
+#include "faciallandmarkdetector.h"
+#include "eyedetector.h"
 class VideoProcessor : public QObject
 {
     Q_OBJECT
@@ -22,7 +23,9 @@ signals:
     void finished();
     void error(QString);
 private:
-    FaceLandMarkDetector *detector;
+    FacialLandMarkDetector *faceDetector;
+    EyeDetector * eyeDetector;
+
 
 };
 

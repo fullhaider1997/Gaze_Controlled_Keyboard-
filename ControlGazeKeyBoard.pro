@@ -16,14 +16,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    facelandmarkdetector.cpp \
+    eyedetector.cpp \
+    faciallandmarkdetector.cpp \
     helper.cpp \
     main.cpp \
     mainwindow.cpp \
     videoprocessor.cpp
 
 HEADERS += \
-    facelandmarkdetector.h \
+    eyedetector.h \
+    faciallandmarkdetector.h \
     helper.h \
     mainwindow.h \
     videoprocessor.h
