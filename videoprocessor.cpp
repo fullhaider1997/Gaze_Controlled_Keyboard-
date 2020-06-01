@@ -15,24 +15,24 @@ void VideoProcessor::displayVideo(){
     qDebug() << "Starting capturing...";
 
     cv::VideoCapture camera(0);
-    cv::Mat Originalframe;
+    cv::Mat frame;
     cv::Mat ProcessedFrame;
 
     while(camera.isOpened())
     {
 
-        camera >> Originalframe;
-        if(Originalframe.empty()){
+        camera >> frame;
+        if(frame.empty()){
            return;
         }
 
-       ProcessedFrame = detector->ConvertFrameToLandMarkFrame(Originalframe);
+        frame = detector->ConvertFrameToLandMarkFrame(frame);
 
 
 
 
         emit display(QPixmap::fromImage(
-                     QImage(Originalframe.data,Originalframe.cols,Originalframe.rows,Originalframe.step,
+                     QImage(frame.data,frame.cols,frame.rows,frame.step,
                      QImage::Format_RGB888).rgbSwapped()));
             }
 

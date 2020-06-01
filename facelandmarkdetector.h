@@ -21,6 +21,7 @@
 #include "helper.h"
 #include "QDebug"
 
+#define FIRST_FACE 0
 
 class FaceLandMarkDetector: public QObject
 {
@@ -29,10 +30,11 @@ public:
     FaceLandMarkDetector();
     ~FaceLandMarkDetector();
      cv:: Mat ConvertFrameToLandMarkFrame(cv::Mat originalFrame);
-     //void DrawText(cv::Mat frame);
-     cv::Mat CreateLandMarkPointsFace(cv::Mat frame,dlib::cv_image<dlib::bgr_pixel> cimg, double (&faceLandMarksPoints)[68][2]);
-     void CreateFourMainEyeCoordinate(double (&faceLandMarksPoints)[68][2]);
-     cv::Mat  DrawEyeCoordinate(cv::Mat frame,std::vector<int> FourEyeCoordinate,double (&faceLandMarksPoints)[68][2],int eye_p1,int eyep_2);
+     void DrawText(cv::Mat frame);
+     void DrawLandMarks(cv::Mat frame);
+     void CreateLandMarkPointsFace(cv::Mat frame);
+     void CreateFourMainEyeCoordinate();
+     cv::Mat  DrawEyeCoordinateOnFace(cv::Mat frame);
      void BlinkDetection();
      void drawRectFace(std::vector<dlib::rectangle> faces, cv::Mat frame);
 signals:
@@ -48,13 +50,25 @@ private:
      std::vector<dlib::full_object_detection> shapes;
      dlib::frontal_face_detector detector;
      cv::Rect points;
+     dlib::image_window window;
      double faceLandMarksPoints[68][2];
-     bool check_once;
-     int blinkCounter;
-     int open;
-     int close;
-     std::vector<int> fourRightEyeCoodinate;
-     std::vector<int> fourLeftEyeCoordinate;
+    int rightEyeVerticalLength;
+    int leftEyeVerticalLength;
+     struct Eyelines {
+        struct rightEyeLines{
+            int p1_x;
+            int p1_y;
+            int p2_x;
+            int p2_y;
+
+      } rightEyeLines;
+     struct leftEyeLines{
+            int p1_x;
+            int p1_y;
+            int p2_x;
+            int p2_y;
+     } leftEyeLines;
+     } eye;
 
 
 

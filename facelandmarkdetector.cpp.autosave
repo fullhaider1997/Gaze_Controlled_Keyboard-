@@ -89,7 +89,6 @@ void FaceLandMarkDetector::DrawLandMarks(cv::Mat frame){
 void FaceLandMarkDetector::drawRectFace(std::vector<dlib::rectangle> faces, cv::Mat frame){
 
 
-
     if(!faces.empty() == true){
 
        cv::Rect points = Helper::dlibRectangleToOpenCV(faces[0]);
@@ -151,9 +150,9 @@ cv::Mat FaceLandMarkDetector::ConvertFrameToLandMarkFrame(cv::Mat frame)
                                                           eye.rightEyeLines.p2_y, eye.rightEyeLines.p1_y);
 
           leftEyeVerticalLength =  Helper::GetDistance(eye.leftEyeLines.p2_x, eye.leftEyeLines.p1_x,
-                                                      eye.leftEyeLines.p2_y, eye.leftEyeLines.p1_y);
+                                                       eye.leftEyeLines.p2_y, eye.leftEyeLines.p1_y);
 
-          if(leftEyeVerticalLength < 50){
+          if(leftEyeVerticalLength < 60){
               cv::putText(frame,
                                    "Blink: ", cvPoint(100, 100),
                                    cv::FONT_HERSHEY_COMPLEX_SMALL,
