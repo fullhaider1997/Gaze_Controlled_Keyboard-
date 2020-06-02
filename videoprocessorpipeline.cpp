@@ -1,23 +1,23 @@
-#include "videoprocessor.h"
+#include "videoprocessorpipeline.h"
 #include "faciallandmarkdetector.h"
-VideoProcessor::VideoProcessor()
+VideoProcessorPipleLine::VideoProcessorPipleLine()
     :
- faceDetector( new FacialLandMarkDetector),
- eyeDetector(new EyeDetector)
-{
+  faceDetector( new FacialLandMarkDetector),
+  eyeDetector( new EyeDetector)
+   {
+
+   }
+VideoProcessorPipleLine::~VideoProcessorPipleLine(){
 
 }
-VideoProcessor::~VideoProcessor(){
-
-}
 
 
-void VideoProcessor::displayVideo(){
+void VideoProcessorPipleLine::displayVideo(){
     qDebug() << "Starting capturing...";
 
     cv::VideoCapture camera(0);
+    std::vector<std::vector<double>> faceLandmarks;
     cv::Mat faceFrame;
-    cv::Mat ProcessedFrame;
     cv::Mat eyeFrame;
 
     while(camera.isOpened())
@@ -28,8 +28,8 @@ void VideoProcessor::displayVideo(){
            return;
         }
 
-        faceFrame = faceDetector->ConvertFrameToLandMarkFrame(faceFrame);
-        eyeFrame =  eyeDetector->displayEye(faceFrame);
+        faceLandmarks = faceDetector->ConvertFrameToLandMarkFrame(faceFrame);
+        eyeFrame =  eyeDetector->displayEye(faceLandmarks,faceFrame);
 
         emit display(QPixmap::fromImage(
                  QImage(eyeFrame.data,eyeFrame.cols,eyeFrame.rows,eyeFrame.step,
@@ -43,7 +43,7 @@ void VideoProcessor::displayVideo(){
 
 
 
-    emit finished();
+ emit finished();
 }
 
 

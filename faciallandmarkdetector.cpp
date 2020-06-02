@@ -9,11 +9,12 @@ FacialLandMarkDetector::~FacialLandMarkDetector(){
 
 }
 FacialLandMarkDetector::FacialLandMarkDetector()
+    :faceLandMarksPoints(68, std::vector<double>(2, 0))
 
 {
 
     try {
-
+        //std::vector<std::vector<int>> faceLandMarksPoints(68, std::vector<int>(2, 0));
         detector = dlib::get_frontal_face_detector();
         dlib::deserialize("/home/haider/Downloads/shape_predictor_68_face_landmarks.dat") >> pose_model;
 
@@ -34,7 +35,7 @@ void FacialLandMarkDetector::DrawText(cv::Mat frame,std::string word, cv::Point 
  }
 
 
-void FacialLandMarkDetector::CreateLandMarkPointsFace(cv::Mat frame)
+std::vector<std::vector<double>>  FacialLandMarkDetector::CreateLandMarkPointsFace(cv::Mat frame)
 {
     dlib::cv_image<dlib::bgr_pixel> cimg(frame);
 
@@ -60,7 +61,7 @@ void FacialLandMarkDetector::CreateLandMarkPointsFace(cv::Mat frame)
    }
 
 
-
+ return faceLandMarksPoints;
 }
 void FacialLandMarkDetector::DrawLandMarks(cv::Mat frame){
 
@@ -96,15 +97,15 @@ void FacialLandMarkDetector::drawRectFace(std::vector<dlib::rectangle> faces, cv
 }
 
 
-cv::Mat FacialLandMarkDetector::ConvertFrameToLandMarkFrame(cv::Mat frame)
+std::vector<std::vector<double>> FacialLandMarkDetector::ConvertFrameToLandMarkFrame(cv::Mat frame)
 {
 
 
          cv::flip(frame,frame, +1);
-         CreateLandMarkPointsFace(frame);
+         faceLandMarksPoints=CreateLandMarkPointsFace(frame);
 
 
- return frame;
+ return faceLandMarksPoints;
 
 
 }

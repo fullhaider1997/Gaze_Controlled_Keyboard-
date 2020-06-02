@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "videoprocessor.h"
+#include "videoprocessorpipeline.h"
 #include "qthread.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,7 +18,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    VideoProcessor *videoProccessor;
+    VideoProcessorPipleLine *videoProccessorPipeLine;
     QThread *thread;
 
 };

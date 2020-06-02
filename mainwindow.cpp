@@ -4,23 +4,23 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
-      videoProccessor(new VideoProcessor),
+      videoProccessorPipeLine(new VideoProcessorPipleLine),
       thread(new QThread)
 {
     ui->setupUi(this);
 
 \
 
-    videoProccessor->moveToThread(thread);
+    videoProccessorPipeLine->moveToThread(thread);
 
-    connect(videoProccessor, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
-    connect(thread, SIGNAL(started()), videoProccessor, SLOT(displayVideo()));
-    connect(videoProccessor, SIGNAL(finished()), thread, SLOT(quit()));
-    connect(videoProccessor, SIGNAL(finished()), videoProccessor, SLOT(deleteLater()));
+    connect(videoProccessorPipeLine, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
+    connect(thread, SIGNAL(started()), videoProccessorPipeLine, SLOT(displayVideo()));
+    connect(videoProccessorPipeLine, SIGNAL(finished()), thread, SLOT(quit()));
+    connect(videoProccessorPipeLine, SIGNAL(finished()), videoProccessorPipeLine, SLOT(deleteLater()));
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-    connect(videoProccessor,SIGNAL(display(QPixmap)),ui->originallabel,SLOT(setPixmap(QPixmap)));
+    connect(videoProccessorPipeLine,SIGNAL(display(QPixmap)),ui->originallabel,SLOT(setPixmap(QPixmap)));
 
-    connect(videoProccessor,SIGNAL(display(QPixmap)),ui->eyelabel,SLOT(setPixmap(QPixmap)));
+    connect(videoProccessorPipeLine,SIGNAL(display(QPixmap)),ui->eyelabel,SLOT(setPixmap(QPixmap)));
     thread->start();
 
 

@@ -16,12 +16,13 @@ public:
      ~EyeDetector();
     void CreateFourMainEyeCoordinate();
     cv::Mat  DrawEyeCoordinateOnFace(cv::Mat frame);
-    cv::Mat displayEye(cv::Mat frame);
+    cv::Mat displayEye(std::vector<std::vector<double>>  faceLandMarksPoints, cv::Mat faceFrame);
     int getAverageHorizontalLengthEye(int eyeLocation);
 
 private:
     int rightEyeVerticalLength;
     int leftEyeVerticalLength;
+    std::vector<std::vector<double>>faceLandMarksPointsCopy;
     const int RIGHT_EYE = 1;
     const int LEFT_EYE = 2;
     struct Eyelines {

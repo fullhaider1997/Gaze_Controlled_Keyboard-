@@ -1,9 +1,9 @@
 #include "helper.h"
 
 
-double Helper::GenerateMidPoint(double lmPoints[68][2], int index_1, int index_2, int cols)
+double Helper::GenerateMidPoint(std::vector<std::vector<double>> facelandmarks, int index_1, int index_2, int cols)
 {
-        return ((lmPoints[index_1][cols] + lmPoints[index_2][cols]) / 2);
+        return ((facelandmarks[index_1][cols] + facelandmarks[index_2][cols]) / 2);
 }
 
 cv::Rect Helper::dlibRectangleToOpenCV(dlib::rectangle r)

@@ -31,10 +31,10 @@ class FacialLandMarkDetector: public QObject
 public:
     FacialLandMarkDetector();
     ~ FacialLandMarkDetector();
-     cv:: Mat ConvertFrameToLandMarkFrame(cv::Mat originalFrame);
+     std::vector<std::vector<double>> ConvertFrameToLandMarkFrame(cv::Mat originalFrame);
      void DrawText(cv::Mat frame,std::string word,cv::Point point);
      void DrawLandMarks(cv::Mat frame);
-     void CreateLandMarkPointsFace(cv::Mat frame);
+     std::vector<std::vector<double>>  CreateLandMarkPointsFace(cv::Mat frame);
      void drawRectFace(std::vector<dlib::rectangle> faces, cv::Mat frame);
 
 
@@ -46,11 +46,8 @@ private:
      dlib::frontal_face_detector detector;
      dlib::shape_predictor pose_model;
      dlib::cv_image<dlib::bgr_pixel> cimg;
+     std::vector<std::vector<double>> faceLandMarksPoints;
 
-
-
-protected:
-          double faceLandMarksPoints[68][2];
 
 
 

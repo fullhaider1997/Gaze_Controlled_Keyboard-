@@ -21,14 +21,14 @@ SOURCES += \
     helper.cpp \
     main.cpp \
     mainwindow.cpp \
-    videoprocessor.cpp
+    videoprocessorpipeline.cpp
 
 HEADERS += \
     eyedetector.h \
     faciallandmarkdetector.h \
     helper.h \
     mainwindow.h \
-    videoprocessor.h
+    videoprocessorpipeline.h
 
 FORMS += \
     mainwindow.ui

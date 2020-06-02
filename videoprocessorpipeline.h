@@ -8,12 +8,13 @@
 #include "QImage"
 #include "faciallandmarkdetector.h"
 #include "eyedetector.h"
-class VideoProcessor : public QObject
+
+class VideoProcessorPipleLine : public QObject
 {
     Q_OBJECT
 public:
-    VideoProcessor();
-    ~VideoProcessor();
+    VideoProcessorPipleLine();
+    ~VideoProcessorPipleLine();
 public slots:
     void displayVideo();
 
