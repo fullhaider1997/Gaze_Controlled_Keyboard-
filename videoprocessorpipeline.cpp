@@ -32,12 +32,12 @@ void VideoProcessorPipleLine::displayVideo(){
         eyeFrame =  eyeDetector->displayEye(faceLandmarks,faceFrame);
 
         emit display(QPixmap::fromImage(
-                 QImage(eyeFrame.data,eyeFrame.cols,eyeFrame.rows,eyeFrame.step,
+                 QImage(faceFrame.data,faceFrame.cols,faceFrame.rows,faceFrame.step,
                  QImage::Format_RGB888).rgbSwapped()));
         }
 
         emit display(QPixmap::fromImage(
-                     QImage(faceFrame.data,faceFrame.cols,faceFrame.rows,faceFrame.step,
+                     QImage(eyeFrame.data,eyeFrame.cols,eyeFrame.rows,eyeFrame.step,
                      QImage::Format_RGB888).rgbSwapped()));
 
 
