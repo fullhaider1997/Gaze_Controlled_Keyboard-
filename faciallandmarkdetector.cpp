@@ -9,7 +9,7 @@ FacialLandMarkDetector::~FacialLandMarkDetector(){
 
 }
 FacialLandMarkDetector::FacialLandMarkDetector()
-    :faceLandMarksPoints(68, std::vector<double>(2, 0))
+    :faceLandMarksPoints(68, cv::Point(2, 0))
 
 {
 
@@ -35,7 +35,7 @@ void FacialLandMarkDetector::DrawText(cv::Mat frame,std::string word, cv::Point 
  }
 
 
-std::vector<std::vector<double>>  FacialLandMarkDetector::CreateLandMarkPointsFace(cv::Mat frame)
+std::vector<cv::Point>  FacialLandMarkDetector::CreateLandMarkPointsFace(cv::Mat frame)
 {
     dlib::cv_image<dlib::bgr_pixel> cimg(frame);
 
@@ -54,10 +54,9 @@ std::vector<std::vector<double>>  FacialLandMarkDetector::CreateLandMarkPointsFa
 
     for (unsigned long i = 0; i < 68; ++i) // Hold all the 68 face landmark coordinates(x, y)
     {
-        faceLandMarksPoints[i][0] = (double)d.part(i).x();
-        faceLandMarksPoints[i][1] = (double)d.part(i).y();
+        faceLandMarksPoints[i] = cv::Point(d.part(i).x(), (double)d.part(i).y());
 
-    }
+     }
    }
 
 
@@ -67,8 +66,8 @@ void FacialLandMarkDetector::DrawLandMarks(cv::Mat frame){
 
     for (unsigned long i = 0; i < 68; ++i) //
           {
-            cv::circle(frame,cv::Point(faceLandMarksPoints[i][0],faceLandMarksPoints[i][1]),2,cv::Scalar(255,255,0),2);
-            qDebug() <<"x: "<<faceLandMarksPoints[i][0]<<" y: "<<faceLandMarksPoints[i][1] ;
+            cv::circle(frame,faceLandMarksPoints[i],2,cv::Scalar(255,255,0),2);
+            qDebug() <<"x: "<<faceLandMarksPoints[i].x<<" y: "<<faceLandMarksPoints[i].y ;
 
           }
 
@@ -97,12 +96,12 @@ void FacialLandMarkDetector::drawRectFace(std::vector<dlib::rectangle> faces, cv
 }
 
 
-std::vector<std::vector<double>> FacialLandMarkDetector::ConvertFrameToLandMarkFrame(cv::Mat frame)
+std::vector<cv::Point> FacialLandMarkDetector::ConvertFrameToLandMarkFrame(cv::Mat frame)
 {
 
 
          cv::flip(frame,frame, +1);
-         faceLandMarksPoints=CreateLandMarkPointsFace(frame);
+         faceLandMarksPoints = CreateLandMarkPointsFace(frame);
 
 
  return faceLandMarksPoints;

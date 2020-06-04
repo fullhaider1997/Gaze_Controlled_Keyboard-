@@ -7,7 +7,7 @@
 #include "qpixmap.h"
 #include "QImage"
 #include "faciallandmarkdetector.h"
-
+#include "variables.h"
 class EyeDetector:public FacialLandMarkDetector
 {
     Q_OBJECT
@@ -17,15 +17,18 @@ public:
     void CreateFourMainEyeCoordinate();
     cv::Mat  DrawEyeCoordinateOnFace(cv::Mat frame);
     void drawEyeBoundary(std::vector<cv::Point> eyeBoundary);
-    std::vector<cv::Point> getEnclosedLeftEyeBoundary(std::vector<std::vector<double>>faceLandMarksPoints );
-    std::vector<cv::Point> getEnclosedRightEyeBoundary(std::vector<std::vector<double>>faceLandMarksPoints );
-    cv::Mat displayEye(std::vector<std::vector<double>>  faceLandMarksPoints, cv::Mat faceFrame);
+    std::vector<cv::Point> GenerateRectEye(std::vector<cv::Point> eyeBoundaryPoints);
+   //  std::vector<cv::Point> getRectEye();
+    std::vector<cv::Point> getEnclosedLeftEyeBoundary(std::vector<cv::Point>faceLandMarksPoints );
+    std::vector<cv::Point> getEnclosedRightEyeBoundary(std::vector<cv::Point>faceLandMarksPoints );
+
+    listFrame displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame);
     int getAverageHorizontalLengthEye(int eyeLocation);
 
 private:
     int rightEyeVerticalLength;
     int leftEyeVerticalLength;
-    std::vector<std::vector<double>>faceLandMarksPointsCopy;
+    std::vector<cv::Point> faceLandMarksPointsCopy;
     std::vector<cv::Point>  leftEyeBoundary;
     std::vector<cv::Point>  rightEyeBoundary;
     const int RIGHT_EYE = 1;
@@ -45,6 +48,8 @@ private:
            int p2_y;
     } leftEyeLines;
     } eye;
+
+
 
 };
 

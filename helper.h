@@ -12,7 +12,7 @@
 class Helper
 {
 public:
-        static double GenerateMidPoint(std::vector<std::vector<double>> faceLandMarksPoints, int index_1, int index_2, int cols);
+        static double GenerateMidPoint(int value_1, int value_2);
         static cv::Rect dlibRectangleToOpenCV(dlib::rectangle r);
         static double GetDistance(int x1, int x2, int y1, int y2);
 };

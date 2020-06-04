@@ -28,6 +28,7 @@ HEADERS += \
     faciallandmarkdetector.h \
     helper.h \
     mainwindow.h \
+    variables.h \
     videoprocessorpipeline.h
 
 FORMS += \

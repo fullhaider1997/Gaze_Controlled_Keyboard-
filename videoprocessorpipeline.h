@@ -28,6 +28,7 @@ private:
     EyeDetector * eyeDetector;
 
 
+
 };
 
 #endif // VIDEOPROCESSOR_H
