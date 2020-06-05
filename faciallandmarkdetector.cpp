@@ -95,13 +95,19 @@ void FacialLandMarkDetector::drawRectFace(std::vector<dlib::rectangle> faces, cv
 
 }
 
+void FacialLandMarkDetector::applyOperations(cv::Mat frame){
+
+    cv::flip(frame,frame, +1);
+   // faceLandMarksPoints = CreateLandMarkPointsFace(frame);
+
+
+}
 
 std::vector<cv::Point> FacialLandMarkDetector::ConvertFrameToLandMarkFrame(cv::Mat frame)
 {
 
+   cv::cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
 
-         cv::flip(frame,frame, +1);
-         faceLandMarksPoints = CreateLandMarkPointsFace(frame);
 
 
  return faceLandMarksPoints;

@@ -1,6 +1,7 @@
 #include "eyedetector.h"
 #include "helper.h"
 #include "variables.h"
+#include "Detector.h"
 EyeDetector::EyeDetector()
 {
     rightEyeBoundary.reserve(6);
@@ -11,8 +12,6 @@ EyeDetector::~EyeDetector(){
 }
 
 int EyeDetector::getAverageHorizontalLengthEye(int eyeLocation){
-
-
 
 
    if(eyeLocation==1){
@@ -54,24 +53,20 @@ cv:: Mat EyeDetector::DrawEyeCoordinateOnFace(cv::Mat frame){
         //Right eye//
 
     // vertical x line
-    cv::line(frame,  cv::Point(eye.rightEyeLines.p1_x,  eye.rightEyeLines.p1_y),
+    cv::line(frame,  cv::Point(eye.rightEyeLines.p1_x, eye.rightEyeLines.p1_y),
                      cv::Point(eye.rightEyeLines.p2_x, eye.rightEyeLines. p2_y),
                      cv::Scalar(255, 255, 0), 1);
 
    // horizontal y line
-    cv::line(frame, cv::Point(faceLandMarksPointsCopy[36].x,
-                              faceLandMarksPointsCopy[36].y),
-                    cv::Point(faceLandMarksPointsCopy[39].x,
-                              faceLandMarksPointsCopy[39].y),
+    cv::line(frame, cv::Point(faceLandMarksPointsCopy[36].x,faceLandMarksPointsCopy[36].y),
+                    cv::Point(faceLandMarksPointsCopy[39].x,faceLandMarksPointsCopy[39].y),
                     cv::Scalar(255, 255, 0), 1);
 
         // Left eye //
 
      // vertical x line
-    cv::line(frame, cv::Point(faceLandMarksPointsCopy[42].x,
-                              faceLandMarksPointsCopy[42].y),
-                    cv::Point(faceLandMarksPointsCopy[45].x,
-                              faceLandMarksPointsCopy[45].y),
+    cv::line(frame, cv::Point(faceLandMarksPointsCopy[42].x,faceLandMarksPointsCopy[42].y),
+                    cv::Point(faceLandMarksPointsCopy[45].x,faceLandMarksPointsCopy[45].y),
                     cv::Scalar(255, 255, 0), 1);
     // horizontal y line
     cv::line(frame, cv::Point(eye.leftEyeLines.p1_x, eye.leftEyeLines.p1_y),
@@ -85,10 +80,10 @@ return frame;
 std::vector<cv::Point> EyeDetector::getEnclosedLeftEyeBoundary
            (std::vector<cv::Point> faceLandMarksPointsCopy)
  {
-                std::vector<int> list = {36,37,38,39,40,41};
-                for(size_t i=0; i<list.size(); i++){
-                  leftEyeBoundary.push_back(cv::Point(faceLandMarksPointsCopy[list[i]].x,faceLandMarksPointsCopy[list[i]].y));
-                 }
+      std::vector<int> list = {36,37,38,39,40,41};
+      for(size_t i=0; i<list.size(); i++){
+            leftEyeBoundary.push_back(cv::Point(faceLandMarksPointsCopy[list[i]].x,faceLandMarksPointsCopy[list[i]].y));
+         }
 
 
  return leftEyeBoundary;
@@ -97,11 +92,10 @@ std::vector<cv::Point> EyeDetector::getEnclosedLeftEyeBoundary
 std::vector<cv::Point> EyeDetector::getEnclosedRightEyeBoundary
            (std::vector<cv::Point> faceLandMarksPointsCopy)
  {
-              std::vector<int> list={42,43,44,45,46,47};
-
-              for(size_t i=0; i<list.size(); i++){
-                  rightEyeBoundary.push_back(cv::Point(faceLandMarksPointsCopy[list[i]].x,faceLandMarksPointsCopy[list[i]].y));
-              }
+         std::vector<int> list={42,43,44,45,46,47};
+         for(size_t i=0; i<list.size(); i++){
+              rightEyeBoundary.push_back(cv::Point(faceLandMarksPointsCopy[list[i]].x,faceLandMarksPointsCopy[list[i]].y));
+            }
 
 
 
@@ -115,65 +109,86 @@ void EyeDetector::drawEyeBoundary(std::vector<cv::Point> eyeBoundary){
 
 }
 
+void EyeDetector::clearFilledUpVector(){
+    leftEyeBoundaryPoint.clear();
+    rightEyeBoundaryPoint.clear();
+    leftEyeBoundary.clear();
+    rightEyeBoundary.clear();
+    faceLandMarksPointsCopy.clear();
+}
+
+
+void EyeDetector::applyOperations(cv::Mat faceFrame){
+    cv::Mat face;
+    cv::Mat dst;
+
+     cv::cvtColor(faceFrame,faceFrame,cv::COLOR_BGR2HSV);
+
+   // faceLandMarksPointsCopy =  faceLandMarksPoints;
+                               CreateFourMainEyeCoordinate();
+   // leftEyeBoundaryPoint    =  getEnclosedLeftEyeBoundary(faceLandMarksPointsCopy);
+  //  rightEyeBoundaryPoint   =  getEnclosedRightEyeBoundary(faceLandMarksPointsCopy);
+
+
+  //  cv::Mat lefteye = faceFrame(cv::Rect(
+                 //               cv::Point(faceLandMarksPointsCopy[42].x,faceLandMarksPointsCopy[43].y),
+                 //               cv::Point(faceLandMarksPointsCopy[45].x,faceLandMarksPointsCopy[46].y)));
+
+  //  if(lefteye.size().width >0 && lefteye.size().height> 0)
+   //    {
+     //     cv::resize(lefteye,lefteye,cv::Size(100,100),0,0,cv::INTER_CUBIC);
+     //     cv::cvtColor(lefteye,dst,cv::COLOR_BGR2GRAY);
+     //     cv::threshold(dst,dst,90,255,cv::THRESH_BINARY);
+     //     cv::resize(dst,dst,cv::Size(100,100),0,0,cv::INTER_CUBIC);
+      //    cv::imshow("eye",lefteye);
+      //    cv::imshow(" threshold image",dst);
+     //  }
 
 
 
-listFrame EyeDetector::displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame){
+  // if(getAverageHorizontalLengthEye(RIGHT_EYE) < 55)
+     //  {
+       //   DrawText(faceFrame,"Blink",cv::Point(100,100));
+     //  }
+
+  //clearFilledUpVector();
+
+}
+
+cv::Mat EyeDetector::displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame){
 
         cv::Mat face;
-
-        listFrame frame;
-        std::vector<cv::Point> leftEyeBoundaryPoint ;
-        std::vector<cv::Point> rightEyeBoundaryPoint ;
-        std::vector<cv::Point> leftEyeOuterPoint;
-
+        cv::Mat dst;
 
         faceLandMarksPointsCopy =  faceLandMarksPoints;
-
-        CreateFourMainEyeCoordinate();
-        faceFrame = DrawEyeCoordinateOnFace(faceFrame);
-
-
-        leftEyeBoundaryPoint = getEnclosedLeftEyeBoundary(faceLandMarksPointsCopy);
-        rightEyeBoundaryPoint = getEnclosedRightEyeBoundary(faceLandMarksPointsCopy);
-        frame.face = faceFrame;
-
-        //leftEyeOuterPoint   = getRectEye();
-         cv::Mat eye    =  faceFrame(cv::Rect(faceLandMarksPointsCopy[35].x,
-                                              faceLandMarksPointsCopy[36].y,
-                                              faceLandMarksPointsCopy[38].x,
-                                              faceLandMarksPointsCopy[39].y));
-         frame.eye=eye;
-
-        for(size_t i=0; i<leftEyeOuterPoint.size(); i++){
-            qDebug() << leftEyeOuterPoint[i].x << " , "<<leftEyeOuterPoint[i].y;
-        }
-
-        //drawEyeBoundary(lefteye);
-//
-        cv::polylines(faceFrame,leftEyeOuterPoint,true, cv::Scalar(0,255,0),2);
-        cv::polylines(faceFrame,rightEyeBoundaryPoint,true, cv::Scalar(0,255,0),2);
+                                   CreateFourMainEyeCoordinate();
+        leftEyeBoundaryPoint    =  getEnclosedLeftEyeBoundary(faceLandMarksPointsCopy);
+        rightEyeBoundaryPoint   =  getEnclosedRightEyeBoundary(faceLandMarksPointsCopy);
 
 
-       // cv::polylines(faceFrame,righteye,true,cv::Scalar(255,255,0),10);
+        cv::Mat lefteye = faceFrame(cv::Rect(
+                                    cv::Point(faceLandMarksPointsCopy[42].x,faceLandMarksPointsCopy[43].y),
+                                    cv::Point(faceLandMarksPointsCopy[45].x,faceLandMarksPointsCopy[46].y)));
 
-
-      // if(getAverageHorizontalLengthEye(RIGHT_EYE) < 55)
-       //  {
-        //   DrawText(faceFrame,"Blink",cv::Point(100,100));
-        // }
-
-
-    qDebug() << "right: " << rightEyeVerticalLength;
-    qDebug() << "left: " <<  leftEyeVerticalLength;
-
-       leftEyeBoundaryPoint.clear();
-       rightEyeBoundaryPoint.clear();
-       leftEyeBoundary.clear();
-       rightEyeBoundary.clear();
-       faceLandMarksPointsCopy.clear();
+        if(lefteye.size().width >0 && lefteye.size().height> 0)
+           {
+              cv::resize(lefteye,lefteye,cv::Size(100,100),0,0,cv::INTER_CUBIC);
+              cv::cvtColor(lefteye,dst,cv::COLOR_BGR2GRAY);
+              cv::threshold(dst,dst,90,255,cv::THRESH_BINARY);
+              cv::resize(dst,dst,cv::Size(100,100),0,0,cv::INTER_CUBIC);
+              cv::imshow("eye",lefteye);
+              cv::imshow(" threshold image",dst);
+           }
 
 
 
-  return frame;
+       if(getAverageHorizontalLengthEye(RIGHT_EYE) < 55)
+           {
+             cv::putText(faceFrame,"Blink",cv::Point(100,100),1,1,cv::Scalar(255,255,0));
+           }
+
+      clearFilledUpVector();
+
+
+  return faceFrame;
 }

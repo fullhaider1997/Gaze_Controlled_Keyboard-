@@ -6,9 +6,9 @@
 #include "opencv2/opencv.hpp"
 #include "qpixmap.h"
 #include "QImage"
+#include "Detector.h"
 #include "faciallandmarkdetector.h"
 #include "eyedetector.h"
-
 class VideoProcessorPipleLine : public QObject
 {
     Q_OBJECT
@@ -24,11 +24,12 @@ signals:
     void finished();
     void error(QString);
 private:
-    FacialLandMarkDetector *faceDetector;
-    EyeDetector * eyeDetector;
-
+    Detector *faceDetector;
+    Detector * eyeDetector;
+    std::vector<Detector*> *imageProcessPipline;
 
 
 };
+
 
 #endif // VIDEOPROCESSOR_H

@@ -24,6 +24,8 @@ SOURCES += \
     videoprocessorpipeline.cpp
 
 HEADERS += \
+    AbstractDetector.h \
+    Detector.h \
     eyedetector.h \
     faciallandmarkdetector.h \
     helper.h \

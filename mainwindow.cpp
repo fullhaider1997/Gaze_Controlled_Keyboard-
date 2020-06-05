@@ -20,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     connect(videoProccessorPipeLine,SIGNAL(display(QPixmap)),ui->originallabel,SLOT(setPixmap(QPixmap)));
 
-    connect(videoProccessorPipeLine,SIGNAL(display(QPixmap)),ui->eyelabel,SLOT(setPixmap(QPixmap)));
     thread->start();
 
 

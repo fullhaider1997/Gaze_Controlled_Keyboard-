@@ -21,11 +21,12 @@
 #include "helper.h"
 #include "QDebug"
 #include "qtimer.h"
+#include "Detector.h"
 
 #define FIRST_FACE 0
 
 
-class FacialLandMarkDetector: public QObject
+class FacialLandMarkDetector: public Detector
 {
      Q_OBJECT
 public:
@@ -36,7 +37,7 @@ public:
      void DrawLandMarks(cv::Mat frame);
      std::vector<cv::Point>  CreateLandMarkPointsFace(cv::Mat frame);
      void drawRectFace(std::vector<dlib::rectangle> faces, cv::Mat frame);
-
+     void applyOperations(cv::Mat frame) override;
 
 private:
      cv::Rect points;

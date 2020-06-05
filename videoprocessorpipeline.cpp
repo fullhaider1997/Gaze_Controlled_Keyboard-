@@ -1,11 +1,15 @@
 #include "videoprocessorpipeline.h"
 #include "faciallandmarkdetector.h"
 #include "variables.h"
+#include "Detector.h"
+#include "eyedetector.h"
+#include "faciallandmarkdetector.h"
 VideoProcessorPipleLine::VideoProcessorPipleLine()
-    :
-  faceDetector( new FacialLandMarkDetector),
-  eyeDetector( new EyeDetector)
    {
+
+    imageProcessPipline->push_back(new FacialLandMarkDetector);
+    imageProcessPipline->push_back(new EyeDetector);
+
 
    }
 VideoProcessorPipleLine::~VideoProcessorPipleLine(){
@@ -14,13 +18,16 @@ VideoProcessorPipleLine::~VideoProcessorPipleLine(){
 
 
 void VideoProcessorPipleLine::displayVideo(){
+
+
+
+
     qDebug() << "Starting capturing...";
 
     cv::VideoCapture camera(0);
-    std::vector<cv::Point> faceLandmarks;
     cv::Mat faceFrame;
     cv::Mat eyeFrame;
-    listFrame frame;
+
 
     while(camera.isOpened())
     {
@@ -30,23 +37,23 @@ void VideoProcessorPipleLine::displayVideo(){
            return;
         }
 
-        faceLandmarks = faceDetector->ConvertFrameToLandMarkFrame(faceFrame);
-         frame =  eyeDetector->displayEye(faceLandmarks,faceFrame);
+        for(auto computationBlock:*imageProcessPipline){
+              computationBlock->applyOperations(faceFrame);
+        }
+
+       // faceLandmarks = faceDetector->ConvertFrameToLandMarkFrame(faceFrame);
+        //faceFrame=  eyeDetector->displayEye(faceLandmarks,faceFrame);
+
 
         emit display(QPixmap::fromImage(
-                 QImage(frame.face.data,
-                        frame.face.cols,
-                        frame.face.rows,
-                        frame.face.step,
+                 QImage(faceFrame.data,
+                        faceFrame.cols,
+                        faceFrame.rows,
+                        faceFrame.step,
                  QImage::Format_RGB888).rgbSwapped()));
         }
 
-        emit display(QPixmap::fromImage(
-                     QImage(frame.eye.data,
-                            frame.eye.cols,
-                            frame.eye.rows,
-                            frame.eye.step,
-                     QImage::Format_RGB888).rgbSwapped()));
+
 
 
 

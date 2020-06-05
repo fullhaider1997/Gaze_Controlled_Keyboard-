@@ -8,7 +8,8 @@
 #include "QImage"
 #include "faciallandmarkdetector.h"
 #include "variables.h"
-class EyeDetector:public FacialLandMarkDetector
+#include "Detector.h"
+class EyeDetector :  public  Detector
 {
     Q_OBJECT
 public:
@@ -18,12 +19,12 @@ public:
     cv::Mat  DrawEyeCoordinateOnFace(cv::Mat frame);
     void drawEyeBoundary(std::vector<cv::Point> eyeBoundary);
     std::vector<cv::Point> GenerateRectEye(std::vector<cv::Point> eyeBoundaryPoints);
-   //  std::vector<cv::Point> getRectEye();
     std::vector<cv::Point> getEnclosedLeftEyeBoundary(std::vector<cv::Point>faceLandMarksPoints );
     std::vector<cv::Point> getEnclosedRightEyeBoundary(std::vector<cv::Point>faceLandMarksPoints );
-
-    listFrame displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame);
+    cv::Mat  displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame);
     int getAverageHorizontalLengthEye(int eyeLocation);
+    void clearFilledUpVector();
+    void applyOperations(cv::Mat) override;
 
 private:
     int rightEyeVerticalLength;
@@ -31,6 +32,8 @@ private:
     std::vector<cv::Point> faceLandMarksPointsCopy;
     std::vector<cv::Point>  leftEyeBoundary;
     std::vector<cv::Point>  rightEyeBoundary;
+    std::vector<cv::Point> leftEyeBoundaryPoint ;
+    std::vector<cv::Point> rightEyeBoundaryPoint ;
     const int RIGHT_EYE = 1;
     const int LEFT_EYE = 2;
     struct Eyelines {
