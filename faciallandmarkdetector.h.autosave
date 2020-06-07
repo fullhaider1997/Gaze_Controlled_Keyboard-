@@ -13,6 +13,7 @@ public:
     FacialLandmarkDetector();
     ~FacialLandmarkDetector();
     void generateLandMarkFrame(cv::Mat originalFrame);
+    std::vector<cv::Point> getFacialLandMarks() const;
     void notify();
 
 private:

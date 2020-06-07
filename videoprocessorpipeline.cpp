@@ -1,14 +1,17 @@
 #include "videoprocessorpipeline.h"
-#include "faciallandmarkdetector.h"
+#include "facealogrithms.h"
 #include "variables.h"
-#include "Detector.h"
-#include "eyedetector.h"
+#include "facialolgrithmsoncrete.h"
+#include "eyealogrithms.h"
+#include "facealogrithms.h"
 #include "faciallandmarkdetector.h"
 VideoProcessorPipleLine::VideoProcessorPipleLine()
+    :faceLandMarkDetector(new FacialLandmarkDetector)
    {
 
-    imageProcessPipline->push_back(new FacialLandMarkDetector);
-    imageProcessPipline->push_back(new EyeDetector);
+    vectorImageProcessingAlogrithms.push_back(*new EyeAlogrithms(*faceLandMarkDetector));
+    vectorImageProcessingAlogrithms.push_back(*new FaceAlogrithms(*faceLandMarkDetector));
+
 
 
    }
@@ -27,22 +30,23 @@ void VideoProcessorPipleLine::displayVideo(){
     cv::VideoCapture camera(0);
     cv::Mat faceFrame;
     cv::Mat eyeFrame;
+    FacialLandmarkDetector detector;
 
 
     while(camera.isOpened())
     {
 
         camera >> faceFrame;
-        if(faceFrame.empty()){
-           return;
+
+        detector.generateLandMarkFrame(faceFrame);
+
+        for(auto &alogrithm :vectorImageProcessingAlogrithms){
+
+            alogrithm.applyOperations(faceFrame);
+            alogrithm.update();
         }
 
-        for(auto computationBlock:*imageProcessPipline){
-              computationBlock->applyOperations(faceFrame);
-        }
 
-       // faceLandmarks = faceDetector->ConvertFrameToLandMarkFrame(faceFrame);
-        //faceFrame=  eyeDetector->displayEye(faceLandmarks,faceFrame);
 
 
         emit display(QPixmap::fromImage(

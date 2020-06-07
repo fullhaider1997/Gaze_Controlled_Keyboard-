@@ -1,17 +1,22 @@
-#include "eyedetector.h"
+#include "eyealogrithms.h"
 #include "helper.h"
 #include "variables.h"
-#include "Detector.h"
-EyeDetector::EyeDetector()
+#include "facialolgrithmsoncrete.h"
+
+
+EyeAlogrithms::EyeAlogrithms(FacialLandmarkDetector &detector)
 {
     rightEyeBoundary.reserve(6);
     leftEyeBoundary.reserve(6);
+
+    this->detector = &detector;
 }
-EyeDetector::~EyeDetector(){
+EyeAlogrithms::~EyeAlogrithms(){
+
 
 }
 
-int EyeDetector::getAverageHorizontalLengthEye(int eyeLocation){
+int EyeAlogrithms::getAverageHorizontalLengthEye(int eyeLocation){
 
 
    if(eyeLocation==1){
@@ -29,7 +34,7 @@ int EyeDetector::getAverageHorizontalLengthEye(int eyeLocation){
 
 return 0;
 }
-void EyeDetector::CreateFourMainEyeCoordinate(){
+void EyeAlogrithms::CreateFourMainEyeCoordinate(){
 
 
 
@@ -48,7 +53,7 @@ void EyeDetector::CreateFourMainEyeCoordinate(){
 
 }
 
-cv:: Mat EyeDetector::DrawEyeCoordinateOnFace(cv::Mat frame){
+cv:: Mat EyeAlogrithms::DrawEyeCoordinateOnFace(cv::Mat frame){
 
         //Right eye//
 
@@ -77,7 +82,7 @@ cv:: Mat EyeDetector::DrawEyeCoordinateOnFace(cv::Mat frame){
 return frame;
 }
 
-std::vector<cv::Point> EyeDetector::getEnclosedLeftEyeBoundary
+std::vector<cv::Point> EyeAlogrithms::getEnclosedLeftEyeBoundary
            (std::vector<cv::Point> faceLandMarksPointsCopy)
  {
       std::vector<int> list = {36,37,38,39,40,41};
@@ -89,7 +94,7 @@ std::vector<cv::Point> EyeDetector::getEnclosedLeftEyeBoundary
  return leftEyeBoundary;
 }
 
-std::vector<cv::Point> EyeDetector::getEnclosedRightEyeBoundary
+std::vector<cv::Point> EyeAlogrithms::getEnclosedRightEyeBoundary
            (std::vector<cv::Point> faceLandMarksPointsCopy)
  {
          std::vector<int> list={42,43,44,45,46,47};
@@ -103,13 +108,13 @@ std::vector<cv::Point> EyeDetector::getEnclosedRightEyeBoundary
 }
 
 
-void EyeDetector::drawEyeBoundary(std::vector<cv::Point> eyeBoundary){
+void EyeAlogrithms::drawEyeBoundary(std::vector<cv::Point> eyeBoundary){
 
 
 
 }
 
-void EyeDetector::clearFilledUpVector(){
+void EyeAlogrithms::clearFilledUpVector(){
     leftEyeBoundaryPoint.clear();
     rightEyeBoundaryPoint.clear();
     leftEyeBoundary.clear();
@@ -117,15 +122,24 @@ void EyeDetector::clearFilledUpVector(){
     faceLandMarksPointsCopy.clear();
 }
 
+void EyeAlogrithms::update(){
 
-void EyeDetector::applyOperations(cv::Mat faceFrame){
+        faceLandMarksPoints = detector->getFacialLandMarks();
+}
+
+
+
+
+void EyeAlogrithms::applyOperations(cv::Mat faceFrame){
     cv::Mat face;
     cv::Mat dst;
 
-     cv::cvtColor(faceFrame,faceFrame,cv::COLOR_BGR2HSV);
+
+     cv::putText(faceFrame,"Eye detector",cv::Point(200,250),1,2,cv::Scalar(255,255,0));
+
 
    // faceLandMarksPointsCopy =  faceLandMarksPoints;
-                               CreateFourMainEyeCoordinate();
+                                 //CreateFourMainEyeCoordinate();
    // leftEyeBoundaryPoint    =  getEnclosedLeftEyeBoundary(faceLandMarksPointsCopy);
   //  rightEyeBoundaryPoint   =  getEnclosedRightEyeBoundary(faceLandMarksPointsCopy);
 
@@ -155,7 +169,7 @@ void EyeDetector::applyOperations(cv::Mat faceFrame){
 
 }
 
-cv::Mat EyeDetector::displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame){
+cv::Mat EyeAlogrithms::displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame){
 
         cv::Mat face;
         cv::Mat dst;
