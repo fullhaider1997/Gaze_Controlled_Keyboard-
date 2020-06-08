@@ -13,12 +13,14 @@ public:
     FacialLandmarkDetector();
     ~FacialLandmarkDetector();
     void generateLandMarkFrame(cv::Mat originalFrame);
+    std::vector<cv::Point> getFacialLandMarks() const;
     void notify();
 
 private:
 
     cv::Rect points;
     cv::Mat copy;
+    const int FIRST_FACE;
     std::vector<dlib::rectangle> faces;
     std::vector<dlib::full_object_detection> shapes;
     dlib::frontal_face_detector detector;

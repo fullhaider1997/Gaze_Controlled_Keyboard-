@@ -1,0 +1,14 @@
+#ifndef DRAWFACIALFEATURE_H
+#define DRAWFACIALFEATURE_H
+
+#include "absractdraw.h"
+
+class DrawFacialFeature: AbsractDraw 
+{
+public:
+    ~DrawFacialFeature();
+     DrawFacialFeature();
+    void Draw() override;
+};
+
+#endif // DRAWFACIALFEATURE_H

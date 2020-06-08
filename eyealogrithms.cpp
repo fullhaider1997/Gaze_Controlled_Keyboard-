@@ -125,6 +125,12 @@ void EyeAlogrithms::clearFilledUpVector(){
 void EyeAlogrithms::update(){
 
         faceLandMarksPoints = detector->getFacialLandMarks();
+
+        if(faceLandMarksPoints.size() <= 0 || faceLandMarksPoints[0].x < 0 || faceLandMarksPoints[0].y < 0){
+            qDebug() << "eye Algorithm fail update(): fandlandmarks size is " << faceLandMarksPoints.size();
+        }else{
+            qDebug() << "eye Alogrithm successful update(): fandlandmarks size is " << faceLandMarksPoints.size();
+        }
 }
 
 

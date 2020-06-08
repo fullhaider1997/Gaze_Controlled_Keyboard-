@@ -25,7 +25,7 @@ signals:
     void finished();
     void error(QString);
 private:
-    std::vector<FacialAlgorithms> vectorImageProcessingAlogrithms;
+    std::vector<FacialAlgorithms*> vectorImageProcessingAlogrithms;
     FacialLandmarkDetector* faceLandMarkDetector;
 
 

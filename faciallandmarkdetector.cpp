@@ -1,8 +1,16 @@
 #include "faciallandmarkdetector.h"
 
 
+
+FacialLandmarkDetector::~FacialLandmarkDetector(){
+
+
+}
+
  FacialLandmarkDetector::FacialLandmarkDetector():
+     FIRST_FACE(0),
     faceLandMarksPoints(68, cv::Point(2, 0))
+
 {
 
      detector = dlib::get_frontal_face_detector();
@@ -10,15 +18,11 @@
 
 }
 
- std::vector<cv::Point> FacialLandMarkDetector::getFacialLandMarks() const{
-
-
-
-
+ std::vector<cv::Point>  FacialLandmarkDetector::getFacialLandMarks() const{
+    return faceLandMarksPoints;
  }
 
 void FacialLandmarkDetector::generateLandMarkFrame(cv::Mat faceframe){
-
 
 
     dlib::cv_image<dlib::bgr_pixel> cimg(faceframe);
@@ -26,18 +30,20 @@ void FacialLandmarkDetector::generateLandMarkFrame(cv::Mat faceframe){
     faces = detector(cimg);
 
 
-   if(faces.size() >0) {
-    std::vector<dlib::full_object_detection> shapes;
-    for (unsigned long i = 0; i < faces.size(); ++i)
-        shapes.push_back(pose_model(cimg, faces[i]));
+   if(faces.size() > 0) {
 
-    std::cout << "Size: " << faces.size() << std::endl;
+    for (auto single_face: faces){
+        shapes.push_back(pose_model(cimg, single_face));
+    }
 
-    const dlib::full_object_detection& d = shapes[0]; // Hold the detected face i
+    const dlib::full_object_detection& detectedFace = shapes[FIRST_FACE];
 
-    for (unsigned long i = 0; i < 68; ++i) // Hold all the 68 face landmark coordinates(x, y)
+
+
+    for (unsigned int landmark = 0; landmark < detectedFace.num_parts(); ++landmark)
     {
-        faceLandMarksPoints[i] = cv::Point(d.part(i).x(), (double)d.part(i).y());
+        faceLandMarksPoints[landmark] = cv::Point((double)detectedFace.part(landmark).x(),
+                                                  (double)detectedFace.part(landmark).y());
 
      }
    }

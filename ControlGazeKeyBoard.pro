@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    absractdraw.cpp \
+    drawfacialfeature.cpp \
     eyealogrithms.cpp \
     facealogrithms.cpp \
     faciallandmarkdetector.cpp \
@@ -25,6 +27,8 @@ SOURCES += \
     videoprocessorpipeline.cpp
 
 HEADERS += \
+    absractdraw.h \
+    drawfacialfeature.h \
     eyealogrithms.h \
     facealogrithms.h \
     facialalgorithmabsract.h \

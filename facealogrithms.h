@@ -34,6 +34,7 @@ public:
      FaceAlogrithms(FacialLandmarkDetector& detector);
     ~ FaceAlogrithms();
      void applyOperations(cv::Mat frame) override;
+     void update() override;
 
 private:
      FacialLandmarkDetector* detector;

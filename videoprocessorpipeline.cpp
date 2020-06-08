@@ -9,8 +9,8 @@ VideoProcessorPipleLine::VideoProcessorPipleLine()
     :faceLandMarkDetector(new FacialLandmarkDetector)
    {
 
-    vectorImageProcessingAlogrithms.push_back(*new EyeAlogrithms(*faceLandMarkDetector));
-    vectorImageProcessingAlogrithms.push_back(*new FaceAlogrithms(*faceLandMarkDetector));
+    vectorImageProcessingAlogrithms.push_back(new EyeAlogrithms(*faceLandMarkDetector));
+    vectorImageProcessingAlogrithms.push_back(new FaceAlogrithms(*faceLandMarkDetector));
 
 
 
@@ -29,7 +29,6 @@ void VideoProcessorPipleLine::displayVideo(){
 
     cv::VideoCapture camera(0);
     cv::Mat faceFrame;
-    cv::Mat eyeFrame;
     FacialLandmarkDetector detector;
 
 
@@ -38,12 +37,12 @@ void VideoProcessorPipleLine::displayVideo(){
 
         camera >> faceFrame;
 
+
         detector.generateLandMarkFrame(faceFrame);
 
-        for(auto &alogrithm :vectorImageProcessingAlogrithms){
-
-            alogrithm.applyOperations(faceFrame);
-            alogrithm.update();
+        for(auto alogrithm :vectorImageProcessingAlogrithms){
+            alogrithm->update();
+            alogrithm->applyOperations(faceFrame);
         }
 
 
