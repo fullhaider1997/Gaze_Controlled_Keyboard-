@@ -17,19 +17,18 @@ class EyeAlogrithms :  public  FacialAlgorithms
     Q_OBJECT
 public:
      EyeAlogrithms();
-     EyeAlogrithms (FacialLandmarkDetector &detector);
      ~EyeAlogrithms ();
     void CreateFourMainEyeCoordinate();
     cv::Mat  DrawEyeCoordinateOnFace(cv::Mat frame);
     void drawEyeBoundary(std::vector<cv::Point> eyeBoundary);
     std::vector<cv::Point> GenerateRectEye(std::vector<cv::Point> eyeBoundaryPoints);
-    std::vector<cv::Point> getEnclosedLeftEyeBoundary(std::vector<cv::Point>faceLandMarksPoints );
-    std::vector<cv::Point> getEnclosedRightEyeBoundary(std::vector<cv::Point>faceLandMarksPoints );
+    std::vector<cv::Point> getEnclosedLeftEyeBoundary();
+    std::vector<cv::Point> getEnclosedRightEyeBoundary();
     cv::Mat  displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame);
     int getAverageHorizontalLengthEye(int eyeLocation);
     void clearFilledUpVector();
     void applyOperations(cv::Mat frame) override;
-    void update() override;
+    void update(std::vector<cv::Point> landmarkspoints) override;
 
 
 

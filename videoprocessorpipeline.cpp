@@ -5,12 +5,13 @@
 #include "eyealogrithms.h"
 #include "facealogrithms.h"
 #include "faciallandmarkdetector.h"
-VideoProcessorPipleLine::VideoProcessorPipleLine()
-    :faceLandMarkDetector(new FacialLandmarkDetector)
+#include "drawfacialfeature.h"
+VideoProcessorPipleLine::VideoProcessorPipleLine():
+    detector(new FacialLandmarkDetector)
    {
 
-    vectorImageProcessingAlogrithms.push_back(new EyeAlogrithms(*faceLandMarkDetector));
-    vectorImageProcessingAlogrithms.push_back(new FaceAlogrithms(*faceLandMarkDetector));
+    vectorImageProcessingAlogrithms.push_back(new EyeAlogrithms);
+    vectorImageProcessingAlogrithms.push_back(new FaceAlogrithms);
 
 
 
@@ -23,13 +24,24 @@ VideoProcessorPipleLine::~VideoProcessorPipleLine(){
 void VideoProcessorPipleLine::displayVideo(){
 
 
-
-
     qDebug() << "Starting capturing...";
 
     cv::VideoCapture camera(0);
     cv::Mat faceFrame;
-    FacialLandmarkDetector detector;
+    std::vector<cv::Point>  faciallandmarks;
+    std::vector<dlib::rectangle> faces;
+    std::vector<dlib::full_object_detection> shapes;
+    dlib::shape_predictor pose_model;
+    dlib::cv_image<dlib::bgr_pixel> cimg;
+
+    dlib::deserialize("/home/haider/Downloads/shape_predictor_68_face_landmarks.dat") >> pose_model;
+   // faceLandMarksPoints.reserve(68);
+
+
+    std::vector<cv::Point> faceLandMarksPoints;
+
+
+
 
 
     while(camera.isOpened())
@@ -37,13 +49,23 @@ void VideoProcessorPipleLine::displayVideo(){
 
         camera >> faceFrame;
 
+        cv::flip(faceFrame,faceFrame,+1);
 
-        detector.generateLandMarkFrame(faceFrame);
 
-        for(auto alogrithm :vectorImageProcessingAlogrithms){
-            alogrithm->update();
-            alogrithm->applyOperations(faceFrame);
-        }
+        faceLandMarksPoints = detector->generateLandMarkFrame(faceFrame);
+       // DrawFacialFeature::Draw(faceLandMarksPoints,faceFrame);
+
+     //   if(faceLandMarksPoints.size() >0)
+        //    qDebug() << "x: "<<faceLandMarksPoints[0].x;
+
+        for(auto alogrithm :vectorImageProcessingAlogrithms)
+          {
+
+              alogrithm->update(faceLandMarksPoints);
+              alogrithm->applyOperations(faceFrame);
+
+          }
+
 
 
 
@@ -54,8 +76,7 @@ void VideoProcessorPipleLine::displayVideo(){
                         faceFrame.rows,
                         faceFrame.step,
                  QImage::Format_RGB888).rgbSwapped()));
-        }
-
+         }
 
 
 

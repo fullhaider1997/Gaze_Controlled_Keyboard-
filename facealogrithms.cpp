@@ -6,27 +6,27 @@
 FaceAlogrithms::~FaceAlogrithms(){
 
 }
-FaceAlogrithms::FaceAlogrithms(FacialLandmarkDetector &detector)
-
+FaceAlogrithms::FaceAlogrithms()
 {
 
-    this->detector = &detector;
+
 
 }
 
-void FaceAlogrithms::update(){
+void FaceAlogrithms::update(std::vector<cv::Point> landmarkspoints){
 
-    faceLandMarksPoints = detector->getFacialLandMarks();
-    if(faceLandMarksPoints.size() <= 0 || faceLandMarksPoints[0].x < 0 || faceLandMarksPoints[0].y < 0){
+    faceLandMarksPoints = landmarkspoints;
+    if(faceLandMarksPoints.size() <= 0 ){
         qDebug() << "faceAlogrithms fail update(): fandlandmarks size is " << faceLandMarksPoints.size();
     }else{
         qDebug() << "faceAlogrithms successful update(): fandlandmarks size is " << faceLandMarksPoints.size();
+
     }
 
 }
 void FaceAlogrithms::applyOperations(cv::Mat frame){
 
-     cv::putText(frame,"face detector",cv::Point(100,150),1,2,cv::Scalar(255,255,0));
+
 
 
 }

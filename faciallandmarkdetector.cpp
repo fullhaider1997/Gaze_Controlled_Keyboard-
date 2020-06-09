@@ -8,48 +8,45 @@ FacialLandmarkDetector::~FacialLandmarkDetector(){
 }
 
  FacialLandmarkDetector::FacialLandmarkDetector():
-     FIRST_FACE(0),
-    faceLandMarksPoints(68, cv::Point(2, 0))
+     FIRST_FACE(0)
 
 {
 
      detector = dlib::get_frontal_face_detector();
      dlib::deserialize("/home/haider/Downloads/shape_predictor_68_face_landmarks.dat") >> pose_model;
+    // faceLandMarksPoints.reserve(68);
 
 }
 
- std::vector<cv::Point>  FacialLandmarkDetector::getFacialLandMarks() const{
-    return faceLandMarksPoints;
- }
 
-void FacialLandmarkDetector::generateLandMarkFrame(cv::Mat faceframe){
+  std::vector<cv::Point>  FacialLandmarkDetector::generateLandMarkFrame(cv::Mat faceFrame){
 
 
-    dlib::cv_image<dlib::bgr_pixel> cimg(faceframe);
+      dlib::cv_image<dlib::bgr_pixel> cimg(faceFrame);
+      std::vector<cv::Point> faceLandMarksPoints;
+      // Detect faces
+      std::vector<dlib::rectangle> faces = detector(cimg);
+      // Find the pose of each face.
+      std::vector<dlib::full_object_detection> shapes;
+      for (unsigned long i = 0; i < faces.size(); ++i)
+          shapes.push_back(pose_model(cimg, faces[i]));
 
-    faces = detector(cimg);
+      const dlib::full_object_detection& detectedFace = shapes[0];
 
+   if(faces.size()>0){
 
-   if(faces.size() > 0) {
+      for (unsigned int landmark = 0; landmark < 68; ++landmark)
+      {
+          faceLandMarksPoints.push_back(cv::Point((double)detectedFace.part(landmark).x(),
+                                                  (double)detectedFace.part(landmark).y()));
+          qDebug() << "x:"<<(double)detectedFace.part(0).y() <<",x: "<<(double)detectedFace.part(0).x() ;
+       }
+      return faceLandMarksPoints;
 
-    for (auto single_face: faces){
-        shapes.push_back(pose_model(cimg, single_face));
-    }
-
-    const dlib::full_object_detection& detectedFace = shapes[FIRST_FACE];
-
-
-
-    for (unsigned int landmark = 0; landmark < detectedFace.num_parts(); ++landmark)
-    {
-        faceLandMarksPoints[landmark] = cv::Point((double)detectedFace.part(landmark).x(),
-                                                  (double)detectedFace.part(landmark).y());
-
-     }
    }
 
 
-
+return faceLandMarksPoints;
 
 
 }

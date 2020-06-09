@@ -18,17 +18,13 @@ public:
     ~VideoProcessorPipleLine();
 public slots:
     void displayVideo();
-
-
 signals:
     void display(QPixmap pixmap);
     void finished();
     void error(QString);
 private:
     std::vector<FacialAlgorithms*> vectorImageProcessingAlogrithms;
-    FacialLandmarkDetector* faceLandMarkDetector;
-
-
+    FacialLandmarkDetector *detector;
 };
 
 

@@ -31,10 +31,10 @@ class FaceAlogrithms: public FacialAlgorithms
 {
      Q_OBJECT
 public:
-     FaceAlogrithms(FacialLandmarkDetector& detector);
+     FaceAlogrithms();
     ~ FaceAlogrithms();
      void applyOperations(cv::Mat frame) override;
-     void update() override;
+     void update(std::vector<cv::Point> landmarkspoints) override;
 
 private:
      FacialLandmarkDetector* detector;
