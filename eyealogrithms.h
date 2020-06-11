@@ -26,6 +26,7 @@ public:
     std::vector<cv::Point> getEnclosedRightEyeBoundary();
     cv::Mat  displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame);
     int getAverageHorizontalLengthEye(int eyeLocation);
+    void blinkDetection(cv::Mat frame);
     void clearFilledUpVector();
     void applyOperations(cv::Mat frame) override;
     void update(std::vector<cv::Point> landmarkspoints) override;

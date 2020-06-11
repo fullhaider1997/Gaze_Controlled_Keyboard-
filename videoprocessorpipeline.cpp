@@ -26,19 +26,9 @@ void VideoProcessorPipleLine::displayVideo(){
 
     qDebug() << "Starting capturing...";
 
-    cv::VideoCapture camera(0);
-    cv::Mat faceFrame;
-    std::vector<cv::Point>  faciallandmarks;
-    std::vector<dlib::rectangle> faces;
-    std::vector<dlib::full_object_detection> shapes;
-    dlib::shape_predictor pose_model;
-    dlib::cv_image<dlib::bgr_pixel> cimg;
-
-    dlib::deserialize("/home/haider/Downloads/shape_predictor_68_face_landmarks.dat") >> pose_model;
-   // faceLandMarksPoints.reserve(68);
+    cv::VideoCapture camera(2);
 
 
-    std::vector<cv::Point> faceLandMarksPoints;
 
 
 
@@ -50,6 +40,7 @@ void VideoProcessorPipleLine::displayVideo(){
         camera >> faceFrame;
 
         cv::flip(faceFrame,faceFrame,+1);
+       // cv::LUT(faceFrame, lookUpTable, faceFrame);
 
 
         faceLandMarksPoints = detector->generateLandMarkFrame(faceFrame);

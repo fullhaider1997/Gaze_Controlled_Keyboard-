@@ -25,6 +25,9 @@ signals:
 private:
     std::vector<FacialAlgorithms*> vectorImageProcessingAlogrithms;
     FacialLandmarkDetector *detector;
+    std::vector<cv::Point> faceLandMarksPoints;
+    cv::Mat faceFrame;
+
 };
 
 
