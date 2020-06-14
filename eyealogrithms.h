@@ -10,7 +10,9 @@
 #include "variables.h"
 #include "facialolgrithmsoncrete.h"
 #include "faciallandmarkdetector.h"
+#include "drawfacialfeature.h"
 class FacialLandmarkDetector;
+class DrawFacial;
 
 class EyeAlogrithms :  public  FacialAlgorithms
 {
@@ -20,14 +22,15 @@ public:
      ~EyeAlogrithms ();
     void CreateFourMainEyeCoordinate();
     cv::Mat  DrawEyeCoordinateOnFace(cv::Mat frame);
-    void drawEyeBoundary(std::vector<cv::Point> eyeBoundary);
+    void drawEyeBoundary(cv::Mat mask);
     std::vector<cv::Point> GenerateRectEye(std::vector<cv::Point> eyeBoundaryPoints);
     std::vector<cv::Point> getEnclosedLeftEyeBoundary();
     std::vector<cv::Point> getEnclosedRightEyeBoundary();
-    cv::Mat  displayEye(std::vector<cv::Point>  faceLandMarksPoints, cv::Mat faceFrame);
     int getAverageHorizontalLengthEye(int eyeLocation);
     void blinkDetection(cv::Mat frame);
-    void clearFilledUpVector();
+
+
+public:
     void applyOperations(cv::Mat frame) override;
     void update(std::vector<cv::Point> landmarkspoints) override;
 
@@ -35,10 +38,13 @@ public:
 
 
 private:
+    cv::Mat copy;
+    cv::Mat copy2;
     std::vector<cv::Point> faceLandMarksPoints;
     FacialLandmarkDetector * detector;
     int rightEyeVerticalLength;
     int leftEyeVerticalLength;
+    cv::Mat mask;
     std::vector<cv::Point> faceLandMarksPointsCopy;
     std::vector<cv::Point>  leftEyeBoundary;
     std::vector<cv::Point>  rightEyeBoundary;

@@ -34,6 +34,7 @@ HEADERS += \
     facialolgrithmsoncrete.h \
     helper.h \
     mainwindow.h \
+    structPoints.h \
     variables.h \
     videoprocessorpipeline.h
 

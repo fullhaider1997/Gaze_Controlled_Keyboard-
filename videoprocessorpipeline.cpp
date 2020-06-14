@@ -6,13 +6,16 @@
 #include "facealogrithms.h"
 #include "faciallandmarkdetector.h"
 #include "drawfacialfeature.h"
-VideoProcessorPipleLine::VideoProcessorPipleLine():
-    detector(new FacialLandmarkDetector)
+#include "datadistributor.h"
+
+VideoProcessorPipleLine::VideoProcessorPipleLine()
+    :detector(new FacialLandmarkDetector)
+
    {
 
     vectorImageProcessingAlogrithms.push_back(new EyeAlogrithms);
     vectorImageProcessingAlogrithms.push_back(new FaceAlogrithms);
-
+    vectorImageProcessingAlogrithms.push_back(new DrawFacial);
 
 
    }
@@ -27,11 +30,8 @@ void VideoProcessorPipleLine::displayVideo(){
     qDebug() << "Starting capturing...";
 
     cv::VideoCapture camera(2);
-
-
-
-
-
+    cv::Mat faceFrame;
+    cv::Mat orig;
 
 
     while(camera.isOpened())
@@ -39,24 +39,20 @@ void VideoProcessorPipleLine::displayVideo(){
 
         camera >> faceFrame;
 
+
         cv::flip(faceFrame,faceFrame,+1);
-       // cv::LUT(faceFrame, lookUpTable, faceFrame);
 
 
         faceLandMarksPoints = detector->generateLandMarkFrame(faceFrame);
-       // DrawFacialFeature::Draw(faceLandMarksPoints,faceFrame);
 
-     //   if(faceLandMarksPoints.size() >0)
-        //    qDebug() << "x: "<<faceLandMarksPoints[0].x;
 
-        for(auto alogrithm :vectorImageProcessingAlogrithms)
-          {
+         for(auto alogrithm :vectorImageProcessingAlogrithms)
+            {
 
-              alogrithm->update(faceLandMarksPoints);
-              alogrithm->applyOperations(faceFrame);
+                alogrithm->update(faceLandMarksPoints);
+                alogrithm->applyOperations(faceFrame);
 
-          }
-
+           }
 
 
 
@@ -69,6 +65,7 @@ void VideoProcessorPipleLine::displayVideo(){
                  QImage::Format_RGB888).rgbSwapped()));
          }
 
+       faceFrame.release();
 
 
 

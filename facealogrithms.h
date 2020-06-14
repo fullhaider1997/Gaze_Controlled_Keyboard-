@@ -26,6 +26,7 @@
 #include "faciallandmarkdetector.h"
 
 class FacialLandmarkDetector;
+class FacialAlgorithms;
 
 class FaceAlogrithms: public FacialAlgorithms
 {
@@ -33,8 +34,10 @@ class FaceAlogrithms: public FacialAlgorithms
 public:
      FaceAlogrithms();
     ~ FaceAlogrithms();
+public:
      void applyOperations(cv::Mat frame) override;
      void update(std::vector<cv::Point> landmarkspoints) override;
+
 
 private:
      FacialLandmarkDetector* detector;

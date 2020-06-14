@@ -10,6 +10,8 @@
 #include "facealogrithms.h"
 #include "eyealogrithms.h"
 #include "faciallandmarkdetector.h"
+#include "drawfacialfeature.h"
+
 class VideoProcessorPipleLine : public QObject
 {
     Q_OBJECT
@@ -27,6 +29,8 @@ private:
     FacialLandmarkDetector *detector;
     std::vector<cv::Point> faceLandMarksPoints;
     cv::Mat faceFrame;
+
+
 
 };
 

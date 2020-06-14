@@ -13,11 +13,15 @@ FaceAlogrithms::FaceAlogrithms()
 
 }
 
+
+
 void FaceAlogrithms::update(std::vector<cv::Point> landmarkspoints){
 
     faceLandMarksPoints = landmarkspoints;
     if(faceLandMarksPoints.size() <= 0 ){
         qDebug() << "faceAlogrithms fail update(): fandlandmarks size is " << faceLandMarksPoints.size();
+        faceLandMarksPoints = std::vector<cv::Point>(68);
+        return;
     }else{
         qDebug() << "faceAlogrithms successful update(): fandlandmarks size is " << faceLandMarksPoints.size();
 

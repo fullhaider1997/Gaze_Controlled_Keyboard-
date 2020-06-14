@@ -21,10 +21,18 @@ FacialLandmarkDetector::~FacialLandmarkDetector(){
 
   std::vector<cv::Point>  FacialLandmarkDetector::generateLandMarkFrame(cv::Mat faceFrame){
 
+      if(faceFrame.empty() == true){
+          qDebug() << "frame is empty !";
+      }
 
+
+      qDebug() << "detecting face...";
       dlib::cv_image<dlib::bgr_pixel> cimg(faceFrame);
       std::vector<cv::Point> faceLandMarksPoints;
       // Detect faces
+      if(cimg.size() <= 0)
+          qDebug() << "cmg is empty";
+
       std::vector<dlib::rectangle> faces = detector(cimg);
       // Find the pose of each face.
       std::vector<dlib::full_object_detection> shapes;
