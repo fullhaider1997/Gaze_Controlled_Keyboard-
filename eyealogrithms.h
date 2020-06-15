@@ -21,8 +21,6 @@ public:
      EyeAlogrithms();
      ~EyeAlogrithms ();
     void CreateFourMainEyeCoordinate();
-    cv::Mat  DrawEyeCoordinateOnFace(cv::Mat frame);
-    void drawEyeBoundary(cv::Mat mask);
     std::vector<cv::Point> GenerateRectEye(std::vector<cv::Point> eyeBoundaryPoints);
     std::vector<cv::Point> getEnclosedLeftEyeBoundary();
     std::vector<cv::Point> getEnclosedRightEyeBoundary();
@@ -31,7 +29,7 @@ public:
 
 
 public:
-    void applyOperations(cv::Mat frame) override;
+    cv::Mat applyOperations(cv::Mat frame) override;
     void update(std::vector<cv::Point> landmarkspoints) override;
 
 

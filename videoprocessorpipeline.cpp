@@ -32,6 +32,7 @@ void VideoProcessorPipleLine::displayVideo(){
     cv::VideoCapture camera(2);
     cv::Mat faceFrame;
     cv::Mat orig;
+    cv::Mat processsed;
 
 
     while(camera.isOpened())
@@ -48,20 +49,18 @@ void VideoProcessorPipleLine::displayVideo(){
 
          for(auto alogrithm :vectorImageProcessingAlogrithms)
             {
-
                 alogrithm->update(faceLandMarksPoints);
-                alogrithm->applyOperations(faceFrame);
-
-           }
+                processsed = alogrithm->applyOperations(faceFrame);
+            }
 
 
 
 
         emit display(QPixmap::fromImage(
-                 QImage(faceFrame.data,
-                        faceFrame.cols,
-                        faceFrame.rows,
-                        faceFrame.step,
+                 QImage(processsed.data,
+                        processsed.cols,
+                        processsed.rows,
+                        processsed.step,
                  QImage::Format_RGB888).rgbSwapped()));
          }
 

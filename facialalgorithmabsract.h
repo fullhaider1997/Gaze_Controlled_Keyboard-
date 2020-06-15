@@ -10,7 +10,7 @@ class FacialAlgorithmsAbstract : public QObject{
 
     //Q_DISABLE_COPY(AbstractDetector);
  public:
-    void virtual applyOperations(cv::Mat) = 0;
+    cv::Mat virtual applyOperations(cv::Mat) = 0;
     void virtual update(std::vector<cv::Point> landmarkspoints) = 0;
 
 

@@ -35,7 +35,7 @@ public:
      FaceAlogrithms();
     ~ FaceAlogrithms();
 public:
-     void applyOperations(cv::Mat frame) override;
+     cv::Mat applyOperations(cv::Mat frame) override;
      void update(std::vector<cv::Point> landmarkspoints) override;
 
 

@@ -5,7 +5,7 @@
 class FacialAlgorithms: public FacialAlgorithmsAbstract{
 
  public:
-    void virtual applyOperations(cv::Mat face)  override= 0;
+    cv::Mat virtual applyOperations(cv::Mat face)  override= 0;
     void virtual update(std::vector<cv::Point> landmarkspoints) override= 0;
 
 

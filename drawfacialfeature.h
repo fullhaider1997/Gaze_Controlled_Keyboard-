@@ -9,12 +9,13 @@ class FacialAlgorithms;
 class DrawFacial :public FacialAlgorithms
 {
 public:
-     void applyOperations(cv::Mat face) override;
-     void update(std::vector<cv::Point> landmarkspoints) override ;
+     cv::Mat applyOperations(cv::Mat face) override;
+     void update(std::vector<cv::Point> landMarksPoints) override ;
 
 public:
-     void updateDrawRightEye(std::vector<cv::Point> landmarkspoints) ;
-     void drawRightEye(cv::Mat face,std::vector<cv::Point> rightfacelandmarks);
+     void updateDrawRightEye(std::vector<cv::Point> landMarksPoints) ;
+     void drawRightEye(cv::Mat face,std::vector<cv::Point> rightFaceLandmarks);
+     cv::Mat  DrawEyeCoordinateOnFace(cv::Mat frame);
 
 private:
      std::vector<cv::Point> faceLandMarksPoints;

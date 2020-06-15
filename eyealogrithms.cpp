@@ -52,38 +52,10 @@ void EyeAlogrithms::CreateFourMainEyeCoordinate(){
 
 }
 
-cv:: Mat EyeAlogrithms::DrawEyeCoordinateOnFace(cv::Mat frame){
-
-        //Right eye//
-
-    // vertical x line
-    cv::line(frame,  cv::Point(eye.rightEyeLines.p1_x, eye.rightEyeLines.p1_y),
-                     cv::Point(eye.rightEyeLines.p2_x, eye.rightEyeLines. p2_y),
-                     cv::Scalar(255, 255, 0), 1);
-
-   // horizontal y line
-    cv::line(frame, cv::Point(faceLandMarksPointsCopy[36].x,faceLandMarksPointsCopy[36].y),
-                    cv::Point(faceLandMarksPointsCopy[39].x,faceLandMarksPointsCopy[39].y),
-                    cv::Scalar(255, 255, 0), 1);
-
-        // Left eye //
-
-     // vertical x line
-    cv::line(frame, cv::Point(faceLandMarksPointsCopy[42].x,faceLandMarksPointsCopy[42].y),
-                    cv::Point(faceLandMarksPointsCopy[45].x,faceLandMarksPointsCopy[45].y),
-                    cv::Scalar(255, 255, 0), 1);
-    // horizontal y line
-    cv::line(frame, cv::Point(eye.leftEyeLines.p1_x, eye.leftEyeLines.p1_y),
-                    cv::Point(eye.leftEyeLines.p2_x, eye.leftEyeLines.p2_y),
-                    cv::Scalar(255, 255, 0), 1);
-
-
-return frame;
-}
 
 std::vector<cv::Point> EyeAlogrithms::getEnclosedLeftEyeBoundary()
  {
-      std::vector<int> list = {36,37,38,39,40,41};
+      std::vector<int> list = {36,37,38,39,40,41,36};
       for(size_t i=0; i<list.size(); i++){
             leftEyeBoundary.push_back(cv::Point(faceLandMarksPointsCopy[list[i]].x,faceLandMarksPointsCopy[list[i]].y));
          }//
@@ -106,16 +78,6 @@ std::vector<cv::Point> EyeAlogrithms::getEnclosedRightEyeBoundary()
 }
 
 
-void EyeAlogrithms::drawEyeBoundary(cv::Mat mask){
-
-
-          cv::polylines(mask, leftEyeBoundaryPoint,true,cv::Scalar(255,255,0));
-
-
-
-}
-
-
 
 void EyeAlogrithms::update(std::vector<cv::Point> landmarkspoints){
 
@@ -134,16 +96,24 @@ void EyeAlogrithms::update(std::vector<cv::Point> landmarkspoints){
 
 void EyeAlogrithms::blinkDetection(cv::Mat faceFrame){
 
-    if(getAverageHorizontalLengthEye(RIGHT_EYE) < 55)
+    qDebug() << "right eye avg: " <<getAverageHorizontalLengthEye(RIGHT_EYE);
+    qDebug() << "left eye avg: "<< getAverageHorizontalLengthEye(LEFT_EYE);
+
+    if(getAverageHorizontalLengthEye(RIGHT_EYE) < 35 && getAverageHorizontalLengthEye(LEFT_EYE) <35)
         {
-          cv::putText(faceFrame,"Blink",cv::Point(200,250),1,2,cv::Scalar(255,255,0));
-       }
+        cv::polylines(faceFrame,rightEyeBoundary,0,cv::Scalar(0,255,0),1);
+        cv::polylines(faceFrame,leftEyeBoundary,0,cv::Scalar(0,255,0),1);
+       }else{
+        cv::polylines(faceFrame,rightEyeBoundary,0,cv::Scalar(0,0,255),1);
+        cv::polylines(faceFrame,leftEyeBoundary,0,cv::Scalar(0,0,255),1);
+
+    }
 
 }
 
 
 
-void EyeAlogrithms::applyOperations(cv::Mat faceFrame){
+cv::Mat EyeAlogrithms::applyOperations(cv::Mat faceFrame){
 
       cv::Mat dst;
       cv::Mat sharp;
@@ -173,18 +143,23 @@ void EyeAlogrithms::applyOperations(cv::Mat faceFrame){
            
 
               leftEyeBoundaryPoint    =  getEnclosedLeftEyeBoundary();
-              rightEyeBoundaryPoint  =  getEnclosedRightEyeBoundary();
+              rightEyeBoundaryPoint   =  getEnclosedRightEyeBoundary();
               rightEyeboundaryGlobal  = rightEyeBoundary;
+              leftEyeboundaryGlobal   = leftEyeBoundaryPoint;
               fourLeftEyeCornerGlobal = cv::Rect( cv::Point(faceLandMarksPointsCopy[42].x,faceLandMarksPointsCopy[43].y),
                                         cv::Point(faceLandMarksPointsCopy[45].x,faceLandMarksPointsCopy[46].y));
 
               fourRightEyeCornerGlobal = cv::Rect( cv::Point(faceLandMarksPointsCopy[36].x,faceLandMarksPointsCopy[37].y),
                                         cv::Point(faceLandMarksPointsCopy[39].x,faceLandMarksPointsCopy[40].y));
 
+              CreateFourMainEyeCoordinate();
+              blinkDetection(faceFrame);
+
 
            }
 
            rightEyeBoundary.clear();
+           leftEyeBoundary.clear();
 
 
 
@@ -197,7 +172,7 @@ void EyeAlogrithms::applyOperations(cv::Mat faceFrame){
 
 
 
-
+           return  faceFrame;
 
 }
 

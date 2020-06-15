@@ -28,11 +28,11 @@ void FaceAlogrithms::update(std::vector<cv::Point> landmarkspoints){
     }
 
 }
-void FaceAlogrithms::applyOperations(cv::Mat frame){
+cv::Mat FaceAlogrithms::applyOperations(cv::Mat frame){
 
 
 
-
+ return frame;
 }
 
 
