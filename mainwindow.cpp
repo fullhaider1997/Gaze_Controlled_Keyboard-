@@ -1,36 +1,51 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "keyboard.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow),
+    , mainGUI(new Ui::MainWindow),
+      keyboard(new KeyBoard(this)),
       videoProccessorPipeLine(new VideoProcessorPipleLine),
-      thread(new QThread)
+      threadVideoProcessor(new QThread),
+      threadKeyBoard(new QThread)
+
 {
-    ui->setupUi(this);
+    mainGUI->setupUi(this);
 
-\
 
-    videoProccessorPipeLine->moveToThread(thread);
+    videoProccessorPipeLine->moveToThread( threadVideoProcessor);
+    keyboard->moveToThread(threadKeyBoard);
 
     connect(videoProccessorPipeLine, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
-    connect(thread, SIGNAL(started()), videoProccessorPipeLine, SLOT(displayVideo()));
-    connect(videoProccessorPipeLine, SIGNAL(finished()), thread, SLOT(quit()));
+    connect( threadVideoProcessor, SIGNAL(started()), videoProccessorPipeLine, SLOT(displayVideo()));
+    connect(videoProccessorPipeLine, SIGNAL(finished()),  threadVideoProcessor, SLOT(quit()));
     connect(videoProccessorPipeLine, SIGNAL(finished()), videoProccessorPipeLine, SLOT(deleteLater()));
-    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-    connect(videoProccessorPipeLine,SIGNAL(display(QPixmap)),ui->originallabel,SLOT(setPixmap(QPixmap)));
+    connect( threadVideoProcessor, SIGNAL(finished()), threadVideoProcessor, SLOT(deleteLater()));
+    connect(videoProccessorPipeLine,SIGNAL(display(QPixmap)),mainGUI->originallabel,SLOT(setPixmap(QPixmap)));
 
-    thread->start();
-
-
+     threadVideoProcessor->start();
 
 
 
 
 }
+
+
+
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    delete mainGUI;
 }
 
+
+void MainWindow::on_pushButton_clicked()
+{
+
+    threadKeyBoard->start();
+    keyboard->show();
+
+
+}

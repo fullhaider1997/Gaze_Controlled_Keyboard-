@@ -21,6 +21,7 @@ SOURCES += \
     facealogrithms.cpp \
     faciallandmarkdetector.cpp \
     helper.cpp \
+    keyboard.cpp \
     main.cpp \
     mainwindow.cpp \
     videoprocessorpipeline.cpp
@@ -33,12 +34,14 @@ HEADERS += \
     faciallandmarkdetector.h \
     facialolgrithmsoncrete.h \
     helper.h \
+    keyboard.h \
     mainwindow.h \
     structPoints.h \
     variables.h \
     videoprocessorpipeline.h
 
 FORMS += \
+    keyboard.ui \
     mainwindow.ui
 
 # Default rules for deployment.
