@@ -44,47 +44,85 @@ cv::Mat DrawFacial::DrawEyeCoordinateOnFace(cv::Mat frame){
 
 cv::Mat DrawFacial::applyOperations(cv::Mat face){
 
+    struct eye leftEye,rightEye;
     extern std::vector<cv::Point> rightEyeboundaryGlobal;
     extern std::vector<cv::Point> leftEyeboundaryGlobal;
     extern cv::Rect fourRightEyeCornerGlobal;
     extern cv::Rect fourLeftEyeCornerGlobal;
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
-    cv::Mat rightEye;
-    cv::Mat leftEye;
+    cv::Mat rightEyeC;
+    cv::Mat leftEyeC;
     cv::Mat rightEyeT;
     cv::Mat leftEyeT;
     cv::Mat segment;
     cv::Mat copy;
     face.copyTo(copy);
     cv::cvtColor(copy,copy,cv::COLOR_RGB2GRAY);
-    rightEye = copy(fourLeftEyeCornerGlobal);
-    leftEye = copy(fourRightEyeCornerGlobal);
-    cv::Mat redMask(480, 640, CV_8UC3, cv::Scalar(0,0,255));
-    cv::Mat greenMask(480, 640, CV_8UC3, cv::Scalar(255,0,0));
+    rightEyeC = copy(fourLeftEyeCornerGlobal);
+    leftEyeC = copy(fourRightEyeCornerGlobal);
+    cv::Mat rightMask(480, 640, CV_8UC3, cv::Scalar(0,0,0));
+    cv::Mat leftMask(480, 640, CV_8UC3, cv::Scalar(255,255,255));
+    cv::Mat centerMask(480, 640, CV_8UC3, cv::Scalar(255,0,0));
 
 
 
 
-    cv::threshold(rightEye,rightEyeT,70,255,cv::THRESH_BINARY);
-    cv::threshold(leftEye,leftEyeT,70,255,cv::THRESH_BINARY);
 
-    cv::Mat halfRight = leftEyeT(cv::Rect(leftEyeT.cols/2, 0, leftEyeT.cols/2, leftEyeT.rows));
-    cv::Mat halfLeft = leftEyeT(cv::Rect(0, 0, leftEyeT.cols/2, leftEyeT.rows));
-    int leftEyeRightHalf = cv::countNonZero(halfRight)+1;
-    int leftEyeLeftHalf = cv::countNonZero(halfLeft)+1;
+    cv::threshold(rightEyeC,rightEyeT,70,255,cv::THRESH_BINARY);
+    cv::threshold(leftEyeC,leftEyeT,70,255,cv::THRESH_BINARY);
 
-    double ratio = leftEyeLeftHalf / leftEyeRightHalf;
-    cv::putText(face, std::to_string(ratio), cv::Point(100,100),
-        cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(200,200,250), 1, CV_AA);
-    if(ratio < 3){
-        cv::imshow("red",redMask);
-        cv::destroyWindow("green");
-    }else if(ratio > 10){
-        cv::imshow("green",greenMask);
-        cv::destroyWindow("red");
 
-    }
+
+    leftEye.rightHalf = leftEyeT(cv::Rect(leftEyeT.cols/2, 0, leftEyeT.cols/2, leftEyeT.rows));
+    leftEye.leftHalf = leftEyeT(cv::Rect(0, 0, leftEyeT.cols/2, leftEyeT.rows));
+
+    rightEye.rightHalf = leftEyeT(cv::Rect(leftEyeT.cols/2, 0, leftEyeT.cols/2, leftEyeT.rows));
+    rightEye.leftHalf = leftEyeT(cv::Rect(0, 0, leftEyeT.cols/2, leftEyeT.rows));
+
+
+
+    double leftEyeRightHalf = cv::countNonZero(leftEye.rightHalf);
+    double leftEyeLeftHalf = cv::countNonZero(leftEye.leftHalf);
+
+    double rightEyeRightHalf = cv::countNonZero(rightEye.rightHalf);
+    double rightEyeLeftHalf = cv::countNonZero(rightEye.leftHalf);
+
+    if(leftEyeRightHalf == 0)
+        leftEyeRightHalf = -1;
+    if(rightEyeRightHalf == 0)
+        rightEyeRightHalf = 1;
+
+
+
+    double ratioLeftEye = leftEyeLeftHalf / leftEyeRightHalf;
+    double ratioRightEye = rightEyeLeftHalf / rightEyeRightHalf;
+    double  avgRatio = (ratioLeftEye + ratioRightEye) / 2;
+
+
+    cv::putText(face,
+                std::to_string(avgRatio),
+                cv::Point(100,100),
+                cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0,0,250), 1, CV_AA);
+
+    qDebug() <<"Ratio is " << avgRatio;
+
+
+
+     if(avgRatio > 0.4  && 0.5 < avgRatio)
+       {
+          cv::imshow("center",centerMask);
+          cv::destroyWindow("right");
+       } else if (avgRatio > 1){
+        cv::imshow("right",rightMask);
+        cv::destroyWindow("center");
+
+       }
+
+
+
+
+
 
     if(rightEyeboundaryGlobal.size() > 0){
         qDebug()<< "I recieved the eyeboundary and size is " << rightEyeboundaryGlobal.size();

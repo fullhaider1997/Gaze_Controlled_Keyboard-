@@ -20,6 +20,11 @@ public:
 private:
      std::vector<cv::Point> faceLandMarksPoints;
      std::vector<cv::Point> rightEyeBoundary;
+     struct eye{
+         cv::Mat rightHalf;
+         cv::Mat leftHalf;
+
+     };
 
 
 };
