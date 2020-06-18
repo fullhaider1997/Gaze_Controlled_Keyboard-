@@ -3,8 +3,7 @@
 
 #include <QMainWindow>
 #include <QDialog>
-
-#include "keyboard.h"
+#include "keyboardprocessor.h"
 #include "videoprocessorpipeline.h"
 #include "qthread.h"
 
@@ -23,15 +22,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void on_pushButton_clicked();
+
+
 
 private:
+    KeyBoardProcessor *keyBoardProcessor;
     Ui::MainWindow * mainGUI;
-    KeyBoard * keyboard;
     VideoProcessorPipleLine *videoProccessorPipeLine;
     QThread *threadVideoProcessor;
-    QThread *threadKeyBoard;
+    QThread *threadKeyBoardProcessor;
+
 
 
 };

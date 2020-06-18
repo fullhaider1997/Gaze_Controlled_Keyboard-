@@ -11,6 +11,8 @@
 #include "eyealogrithms.h"
 #include "faciallandmarkdetector.h"
 #include "drawfacialfeature.h"
+#include "qabstractbutton.h"
+#include "keyboardprocessor.h"
 
 class VideoProcessorPipleLine : public QObject
 {
@@ -20,13 +22,17 @@ public:
     ~VideoProcessorPipleLine();
 public slots:
     void displayVideo();
+    void loopButtons();
+
 signals:
     void display(QPixmap pixmap);
     void finished();
     void error(QString);
 private:
+
     std::vector<FacialAlgorithms*> vectorImageProcessingAlogrithms;
     FacialLandmarkDetector *detector;
+     std::vector<QAbstractButton*> *KeyBoardButtons;
     std::vector<cv::Point> faceLandMarksPoints;
     cv::Mat faceFrame;
 

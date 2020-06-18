@@ -7,11 +7,15 @@
 #include "faciallandmarkdetector.h"
 #include "drawfacialfeature.h"
 #include "datadistributor.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 VideoProcessorPipleLine::VideoProcessorPipleLine()
-    :detector(new FacialLandmarkDetector)
+    :
+      detector(new FacialLandmarkDetector)
 
    {
+
 
     vectorImageProcessingAlogrithms.push_back(new EyeAlogrithms);
     vectorImageProcessingAlogrithms.push_back(new FaceAlogrithms);
@@ -23,6 +27,11 @@ VideoProcessorPipleLine::~VideoProcessorPipleLine(){
 
 }
 
+void VideoProcessorPipleLine::loopButtons(){
+
+    qDebug() << "Hello world";
+
+}
 
 void VideoProcessorPipleLine::displayVideo(){
 
