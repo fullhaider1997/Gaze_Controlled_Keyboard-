@@ -23,8 +23,10 @@ public:
 public slots:
     void displayVideo();
     void loopButtons();
+    void receivedBlink(bool answer);
 
 signals:
+    void videoProcessorBlinked(bool answer);
     void display(QPixmap pixmap);
     void finished();
     void error(QString);

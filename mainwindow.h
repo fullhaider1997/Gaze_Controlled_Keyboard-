@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QDialog>
-#include "keyboardprocessor.h"
 #include "videoprocessorpipeline.h"
 #include "qthread.h"
 
@@ -22,15 +21,47 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-
+public slots:
+    void loopThroughButtons();
+    void userIsBlinking(bool answer);
 
 
 private:
-    KeyBoardProcessor *keyBoardProcessor;
     Ui::MainWindow * mainGUI;
     VideoProcessorPipleLine *videoProccessorPipeLine;
     QThread *threadVideoProcessor;
     QThread *threadKeyBoardProcessor;
+    QList<QPushButton *> listButtons;
+
+
+public:
+    struct KeyBoardProcessor{
+
+        KeyBoardProcessor()
+            :
+            buttonPosition(1),
+            blinkingStatus(false)
+            {}
+
+        void IncrementKeyBoardPosition(){
+            buttonPosition++;
+            if(buttonPosition == 11){
+                buttonPosition = 1;
+            }
+        }
+        int getCurrentButtonPosition(){
+            return buttonPosition;
+        }
+
+    private:
+        int buttonPosition;
+        bool blinkingStatus;
+    };
+
+private:
+    MainWindow::KeyBoardProcessor keyboard;
+
+
 
 
 

@@ -27,10 +27,13 @@ public:
     int getAverageHorizontalLengthEye(int eyeLocation);
     void blinkDetection(cv::Mat frame);
 
-
 public:
     cv::Mat applyOperations(cv::Mat frame) override;
     void update(std::vector<cv::Point> landmarkspoints) override;
+
+signals:
+    void UserBlinked(bool answer);
+
 
 
 

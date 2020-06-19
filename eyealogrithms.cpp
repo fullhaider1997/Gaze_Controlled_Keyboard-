@@ -99,13 +99,15 @@ void EyeAlogrithms::blinkDetection(cv::Mat faceFrame){
     qDebug() << "right eye avg: " <<getAverageHorizontalLengthEye(RIGHT_EYE);
     qDebug() << "left eye avg: "<< getAverageHorizontalLengthEye(LEFT_EYE);
 
-    if(getAverageHorizontalLengthEye(RIGHT_EYE) < 35 && getAverageHorizontalLengthEye(LEFT_EYE) <35)
+    if(getAverageHorizontalLengthEye(RIGHT_EYE) < 50 && getAverageHorizontalLengthEye(LEFT_EYE) <50)
         {
         cv::polylines(faceFrame,rightEyeBoundary,0,cv::Scalar(0,255,0),1);
         cv::polylines(faceFrame,leftEyeBoundary,0,cv::Scalar(0,255,0),1);
        }else{
         cv::polylines(faceFrame,rightEyeBoundary,0,cv::Scalar(0,0,255),1);
         cv::polylines(faceFrame,leftEyeBoundary,0,cv::Scalar(0,0,255),1);
+
+        emit UserBlinked(true);
 
     }
 

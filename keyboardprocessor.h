@@ -13,11 +13,12 @@ public:
     ~KeyBoardProcessor();
 
 public slots:
-    void loopThroughButtons();
+
 
 signals:
     void finished();
     void error(QString);
+private:
 
 
 };

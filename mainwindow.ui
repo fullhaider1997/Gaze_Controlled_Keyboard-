@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1175</width>
-    <height>630</height>
+    <width>1170</width>
+    <height>621</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QLabel" name="originallabel">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>40</x>
       <y>30</y>
-      <width>591</width>
-      <height>451</height>
+      <width>611</width>
+      <height>511</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -28,19 +28,6 @@
     </property>
     <property name="text">
      <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>500</y>
-      <width>161</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start</string>
     </property>
    </widget>
    <widget class="QPushButton" name="J_Button">
@@ -275,10 +262,32 @@
     <property name="geometry">
      <rect>
       <x>690</x>
-      <y>30</y>
+      <y>70</y>
       <width>461</width>
       <height>141</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>800</x>
+      <y>20</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Serif</family>
+      <pointsize>21</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="text">
+     <string>       Result</string>
     </property>
    </widget>
   </widget>
@@ -287,7 +296,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1175</width>
+     <width>1170</width>
      <height>22</height>
     </rect>
    </property>

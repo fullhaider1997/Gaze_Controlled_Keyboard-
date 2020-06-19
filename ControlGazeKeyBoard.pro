@@ -21,7 +21,6 @@ SOURCES += \
     facealogrithms.cpp \
     faciallandmarkdetector.cpp \
     helper.cpp \
-    keyboardprocessor.cpp \
     main.cpp \
     mainwindow.cpp \
     videoprocessorpipeline.cpp
@@ -34,7 +33,6 @@ HEADERS += \
     faciallandmarkdetector.h \
     facialolgrithmsoncrete.h \
     helper.h \
-    keyboardprocessor.h \
     mainwindow.h \
     structPoints.h \
     variables.h \

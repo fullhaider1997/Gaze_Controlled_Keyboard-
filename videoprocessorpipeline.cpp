@@ -20,11 +20,17 @@ VideoProcessorPipleLine::VideoProcessorPipleLine()
     vectorImageProcessingAlogrithms.push_back(new EyeAlogrithms);
     vectorImageProcessingAlogrithms.push_back(new FaceAlogrithms);
     vectorImageProcessingAlogrithms.push_back(new DrawFacial);
-
+    connect(vectorImageProcessingAlogrithms[0],SIGNAL(UserBlinked(bool)),this,SLOT(receivedBlink(bool)));
 
    }
 VideoProcessorPipleLine::~VideoProcessorPipleLine(){
 
+}
+
+void VideoProcessorPipleLine::receivedBlink(bool answer){
+
+    qDebug() << "Video processor recieved the blinking signals...:"  << answer;
+    emit  videoProcessorBlinked(answer);
 }
 
 void VideoProcessorPipleLine::loopButtons(){
