@@ -8,5 +8,9 @@ Gaze and blink controlled virtual keyboard ( prototype )
 - Gaze tracking is not very accurate, needs further improvement.
 
 This project was inspired by Pysource:
+
 https://www.youtube.com/watch?v=VWUgkcX_KoY&list=PL6Yc5OUgcoTlvHb5OfFLUJ90ofBuoU5g8
 
+Example of GUI:
+
+![Screenshot](gui.png)
